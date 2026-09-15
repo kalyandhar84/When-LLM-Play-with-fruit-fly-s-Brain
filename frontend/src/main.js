@@ -1,17 +1,17 @@
 import * as api from "./api.js";
 
 const els = {
-  journeyGrid: document.getElementById("journey-grid"),
-  findForm: document.getElementById("find-form"),
-  compareForm: document.getElementById("compare-form"),
-  exploreConsole: document.getElementById("explore-console"),
-  compareConsole: document.getElementById("compare-console"),
+  board: document.getElementById("scenario-board"),
   results: document.getElementById("results"),
   exploreResults: document.getElementById("explore-results"),
   compareResults: document.getElementById("compare-results"),
+  storyCard: document.getElementById("story-card"),
   status: document.getElementById("status"),
-  modeExplore: document.getElementById("mode-explore"),
-  modeCompare: document.getElementById("mode-compare"),
+  mascotLine: document.getElementById("mascot-line"),
+  findForm: document.getElementById("find-form"),
+  scientistToggle: document.getElementById("scientist-toggle"),
+  scientistPanel: document.getElementById("scientist-panel"),
+  compareTasteTv: document.getElementById("compare-taste-tv"),
   demoBtn: document.getElementById("demo-btn"),
   sourceKind: document.getElementById("source-kind"),
   sourceValue: document.getElementById("source-value"),
@@ -21,15 +21,20 @@ const els = {
   destSuggest: document.getElementById("dest-suggest"),
 };
 
-const CATEGORIES = ["Visual", "Olfactory", "Auditory", "Taste", "Motor", "Descending"];
+const CATEGORIES = [
+  "Visual", "Olfactory", "Auditory", "Taste", "Motor", "Descending",
+  "Temperature", "Hot", "Cold", "Mechanosensory",
+];
 
 const state = {
-  mode: "explore",
+  scenarios: [],
+  activeId: null,
   result: null,
   compare: null,
   selectedPath: 0,
   selectedNeuron: null,
   branch: null,
+  story: null,
 };
 
 function escapeHtml(value) {
@@ -40,18 +45,20 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function setMode(mode) {
-  state.mode = mode;
-  els.modeExplore.setAttribute("aria-pressed", String(mode === "explore"));
-  els.modeCompare.setAttribute("aria-pressed", String(mode === "compare"));
-  els.exploreConsole.hidden = mode !== "explore";
-  els.compareConsole.hidden = mode !== "compare";
-  els.exploreResults.hidden = mode !== "explore";
-  els.compareResults.hidden = mode !== "compare";
+function setMood(mood, pose, line) {
+  document.body.dataset.mood = mood || "idle";
+  document.body.dataset.pose = pose || "idle";
+  document.body.classList.toggle("flash", mood === "zap");
+  if (line) els.mascotLine.textContent = line;
+  if (mood === "zap") {
+    window.setTimeout(() => document.body.classList.remove("flash"), 600);
+  }
 }
 
 function showBusy(message) {
   els.results.hidden = false;
+  els.compareResults.hidden = true;
+  els.exploreResults.hidden = false;
   els.status.textContent = message;
 }
 
@@ -60,50 +67,58 @@ function showError(error) {
   els.status.textContent = error.message || String(error);
 }
 
-async function loadJourneys() {
-  const journeys = await api.journeys();
-  els.journeyGrid.innerHTML = journeys
+function renderBoard() {
+  els.board.innerHTML = state.scenarios
     .map(
-      (j) => `
-      <button class="journey-card" type="button" data-id="${escapeHtml(j.id)}">
-        <small>${escapeHtml(j.subtitle)}</small>
-        <h4>${escapeHtml(j.title)}</h4>
-        <p>${escapeHtml(j.blurb)}</p>
+      (s) => `
+      <button class="scene-card mood-${escapeHtml(s.mood)} ${state.activeId === s.id ? "active" : ""}" type="button" data-id="${escapeHtml(s.id)}">
+        <div class="art" aria-hidden="true">${s.emoji}</div>
+        <h4>${escapeHtml(s.title)}</h4>
+        <p>${escapeHtml(s.blurb)}</p>
+        <small>${escapeHtml(s.play_label)}</small>
       </button>`
     )
     .join("");
-  els.journeyGrid.querySelectorAll(".journey-card").forEach((btn) => {
-    btn.addEventListener("click", () => runJourney(journeys.find((j) => j.id === btn.dataset.id)));
+  els.board.querySelectorAll(".scene-card").forEach((btn) => {
+    btn.addEventListener("click", () => playScenario(btn.dataset.id));
   });
 }
 
-async function runJourney(journey) {
-  if (!journey) return;
-  setMode("explore");
-  els.sourceKind.value = journey.source_query.kind;
-  els.sourceValue.value = journey.preferred_source || journey.source_query.value;
-  els.destKind.value = journey.destination_query.kind;
-  els.destValue.value = journey.preferred_destination || journey.destination_query.value;
-  // Use preferred cell IDs so guided journeys match the published examples.
-  await runFind(
-    api.spec("neuron", journey.preferred_source),
-    api.spec("neuron", journey.preferred_destination),
-    `Running “${journey.title}”…`
-  );
-}
-
-async function runFind(source, destination, message = "Tracing structural pathways…") {
-  showBusy(message);
+async function playScenario(id) {
+  const scenario = state.scenarios.find((s) => s.id === id);
+  if (!scenario) return;
+  state.activeId = id;
+  renderBoard();
+  setMood(scenario.mood, scenario.pose, scenario.hook);
+  showBusy("Following the wires…");
+  els.storyCard.innerHTML = `<p>${escapeHtml(scenario.hook)}</p>`;
   try {
-    const result = await api.findPaths(source, destination);
-    state.result = result;
+    const packed = await api.runScenario(id);
+    state.result = packed.result;
+    state.story = packed.story;
     state.selectedPath = 0;
-    state.selectedNeuron = result.paths[0]?.neuron_ids[0] || null;
+    state.selectedNeuron = packed.result.paths[0]?.neuron_ids[0] || null;
     await refreshBranch();
+    renderStory();
     renderExplore();
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {
     showError(error);
   }
+}
+
+function renderStory() {
+  if (!state.story) {
+    els.storyCard.innerHTML = "";
+    return;
+  }
+  const beats = state.story.beats
+    .map((beat, i) => `<li style="animation-delay:${i * 90}ms">${escapeHtml(beat)}</li>`)
+    .join("");
+  els.storyCard.innerHTML = `
+    <h3>${escapeHtml(state.story.headline)}</h3>
+    <ol>${beats}</ol>
+  `;
 }
 
 async function refreshBranch() {
@@ -123,96 +138,91 @@ function renderExplore() {
   if (!result) return;
   els.results.hidden = false;
   els.exploreResults.hidden = false;
+  els.compareResults.hidden = true;
   if (!result.paths.length) {
-    els.status.textContent = "No structural path found in the exploration graph.";
-    els.exploreResults.innerHTML = `<p class="empty">${escapeHtml(result.anatomical_summary)}</p>`;
+    els.status.textContent = "No path in this toy map.";
+    els.exploreResults.innerHTML = `<p>${escapeHtml(result.anatomical_summary)}</p>`;
     return;
   }
   const path = result.paths[state.selectedPath] || result.paths[0];
-  els.status.textContent = `${result.paths.length} route(s) · ${path.hop_count} hop(s) · claim: structural connectivity`;
+  els.status.textContent = `${result.paths.length} routes · ${path.hop_count} hops · still just a wiring map`;
 
   const tabs = result.paths
     .map(
       (p, i) =>
         `<button class="path-tab ${i === state.selectedPath ? "active" : ""}" type="button" data-i="${i}">
-          ${escapeHtml(p.label)} · ${p.hop_count} hops · ${p.total_synapses} syn
+          ${escapeHtml(p.label)} · ${p.hop_count} hops
         </button>`
     )
     .join("");
 
-  const nodes = [];
+  const pieces = [];
+  let i = 0;
   path.steps.forEach((step, idx) => {
-    if (idx === 0) nodes.push(neuronCard(step.from_neuron));
-    nodes.push(edgeLabel(step.synapses));
-    nodes.push(neuronCard(step.to_neuron));
+    if (idx === 0) pieces.push(neuronCard(step.from_neuron, i++));
+    pieces.push(edgeLabel(step.synapses, i++));
+    pieces.push(neuronCard(step.to_neuron, i++));
   });
 
   const strength = path.strength_profile
     .map(
       (row) => `
       <div class="bar-row">
-        <label><span>${escapeHtml(row.from_name)} → ${escapeHtml(row.to_name)}</span><span>${row.synapses} synapses · ${row.band}</span></label>
-        <div class="bar ${escapeHtml(row.band)}"><i style="width:${Math.max(8, row.relative * 100)}%"></i></div>
+        <label><span>${escapeHtml(row.from_name)} → ${escapeHtml(row.to_name)}</span><span>${row.synapses} synapses</span></label>
+        <div class="bar ${escapeHtml(row.band)}"><i style="--w:${Math.max(10, row.relative * 100)}%"></i></div>
       </div>`
     )
     .join("");
 
-  const anatomy = path.region_labels
-    .map((label) => `<span>${escapeHtml(label)}</span>`)
-    .join("");
-
+  const anatomy = path.region_labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("");
   const hubs = (result.hubs || [])
     .map(
       (h) => `
       <article class="hub-item">
         <strong>${escapeHtml(h.neuron.name)}</strong>
-        <div class="meta">${escapeHtml(h.neuron.cell_type)} · degree ${h.degree} · betweenness ${h.betweenness}</div>
+        <div class="meta">${escapeHtml(h.neuron.cell_type)} · ${h.degree} neighbors</div>
         <p>${escapeHtml(h.interpretation)}</p>
       </article>`
     )
     .join("");
 
-  const branch = renderBranch();
-
   els.exploreResults.innerHTML = `
     <div class="path-tabs">${tabs}</div>
-    <div class="journey-track">${nodes.join("")}</div>
+    <div class="journey-track">${pieces.join("")}</div>
     <div class="metrics">
-      <div class="metric"><span>Source</span><strong>${escapeHtml(path.steps[0].from_neuron.name)}</strong></div>
-      <div class="metric"><span>Destination</span><strong>${escapeHtml(path.steps.at(-1).to_neuron.name)}</strong></div>
+      <div class="metric"><span>Start</span><strong>${escapeHtml(path.steps[0].from_neuron.name)}</strong></div>
+      <div class="metric"><span>End</span><strong>${escapeHtml(path.steps.at(-1).to_neuron.name)}</strong></div>
       <div class="metric"><span>Hops</span><strong>${path.hop_count}</strong></div>
-      <div class="metric"><span>Total synapses</span><strong>${path.total_synapses}</strong></div>
-      <div class="metric"><span>Bottleneck</span><strong>${path.min_synapses}</strong></div>
-      <div class="metric"><span>Mean synapses</span><strong>${path.mean_synapses}</strong></div>
+      <div class="metric"><span>Synapse total</span><strong>${path.total_synapses}</strong></div>
     </div>
     <div class="panel">
-      <h4>Non-specialist explanation</h4>
+      <h4>In plain words</h4>
       <p>${escapeHtml(path.explanation)}</p>
     </div>
-    <div class="grid-2">
+    <div class="grid-2" style="margin-top:12px">
       <div class="panel">
         <h4>Why this path?</h4>
         <p>${escapeHtml(path.why_this_path)}</p>
       </div>
       <div class="panel">
-        <h4>Pathway strength profile</h4>
+        <h4>How strong are the links?</h4>
         ${strength}
       </div>
     </div>
     <div class="panel" style="margin-top:12px">
-      <h4>Anatomical journey</h4>
+      <h4>Neighborhoods along the way</h4>
       <p>${escapeHtml(result.anatomical_summary)}</p>
       <div class="stepper">${anatomy}</div>
     </div>
-    <div class="grid-2">
+    <div class="grid-2" style="margin-top:12px">
       <div class="panel">
-        <h4>Branching view</h4>
-        <p>Select a neuron on the path. Upstream / downstream neighbors show where this cell can branch — not a single linear circuit.</p>
-        ${branch}
+        <h4>Tap a cell to see branches</h4>
+        <p>A neuron is a crossroads, not a one-way street.</p>
+        ${renderBranch()}
       </div>
       <div class="panel">
-        <h4>Neuron importance (structural hubs)</h4>
-        <p>Ranks describe connectivity inside this exploration graph, not proven behavioral importance.</p>
+        <h4>Busy crossroads (not “important” in real life)</h4>
+        <p>These ranks are only inside this tiny map.</p>
         ${hubs}
       </div>
     </div>
@@ -221,8 +231,7 @@ function renderExplore() {
   els.exploreResults.querySelectorAll(".path-tab").forEach((btn) => {
     btn.addEventListener("click", async () => {
       state.selectedPath = Number(btn.dataset.i);
-      const next = state.result.paths[state.selectedPath];
-      state.selectedNeuron = next?.neuron_ids[0] || null;
+      state.selectedNeuron = state.result.paths[state.selectedPath]?.neuron_ids[0] || null;
       await refreshBranch();
       renderExplore();
     });
@@ -236,26 +245,26 @@ function renderExplore() {
   });
 }
 
-function neuronCard(neuron) {
+function neuronCard(neuron, index) {
   const selected = neuron.id === state.selectedNeuron ? "selected" : "";
   return `
-    <button class="node ${selected}" type="button" data-neuron="${escapeHtml(neuron.id)}">
+    <button class="node ${selected}" type="button" data-neuron="${escapeHtml(neuron.id)}" style="--i:${index}">
       <div class="nid">${escapeHtml(neuron.id)}</div>
       <h4>${escapeHtml(neuron.name)}</h4>
       <div class="meta">${escapeHtml(neuron.cell_type)} · ${escapeHtml(neuron.region_label)}</div>
     </button>`;
 }
 
-function edgeLabel(synapses) {
-  return `<div class="edge">${synapses}<small>synapses</small></div>`;
+function edgeLabel(synapses, index) {
+  return `<div class="edge" style="--i:${index}"><span class="pulse"></span>${synapses}<small>synapses</small></div>`;
 }
 
 function renderBranch() {
   const data = state.branch;
-  if (!data) return `<p class="empty">Click a neuron to inspect neighbors.</p>`;
+  if (!data) return `<p>Tap a glowing cell on the path.</p>`;
   const col = (rows, title) => `
     <div>
-      <strong>${title} (${rows.length})</strong>
+      <strong>${title}</strong>
       ${rows
         .map(
           (row) => `
@@ -267,10 +276,10 @@ function renderBranch() {
         .join("")}
     </div>`;
   return `
-    <p><strong>${escapeHtml(data.neuron.name)}</strong> — ${escapeHtml(data.neuron.description || data.neuron.cell_type)}</p>
+    <p><strong>${escapeHtml(data.neuron.name)}</strong> — ${escapeHtml(data.neuron.description || "")}</p>
     <div class="branch-cols">
-      ${col(data.upstream, "Upstream")}
-      ${col(data.downstream, "Downstream")}
+      ${col(data.upstream, "Before")}
+      ${col(data.downstream, "After")}
     </div>`;
 }
 
@@ -278,30 +287,30 @@ function renderCompare() {
   const cmp = state.compare;
   if (!cmp) return;
   els.results.hidden = false;
+  els.exploreResults.hidden = true;
   els.compareResults.hidden = false;
-  els.status.textContent = "Comparison uses the top-ranked structural route on each side.";
-
+  els.status.textContent = "Do the two scenes share any cells?";
+  setMood("idle", "idle", "Two scenes, one map. Shared cells are meeting points in the wiring — not proof they happen together.");
   const side = (label, result) => {
     const path = result.paths?.[0];
-    if (!path) return `<div class="panel"><h4>${label}</h4><p>No path found.</p></div>`;
+    if (!path) return `<div class="panel"><h4>${label}</h4><p>No path.</p></div>`;
     return `
       <div class="panel">
-        <h4>${label}: ${escapeHtml(path.label)}</h4>
-        <p>${path.hop_count} hops · ${path.total_synapses} synapses · ${escapeHtml(path.region_labels.join(" → "))}</p>
+        <h4>${label}</h4>
+        <p>${path.hop_count} hops · ${escapeHtml(path.region_labels.join(" → "))}</p>
         <p>${escapeHtml(path.explanation)}</p>
       </div>`;
   };
-
-  const shared = (cmp.shared_neuron_ids || []).join(", ") || "none in the top routes";
+  const shared = (cmp.shared_neuron_ids || []).join(", ") || "none on the top routes";
+  els.storyCard.innerHTML = `
+    <h3>Taste food vs watch TV</h3>
+    <p>${escapeHtml(cmp.comparison_explanation)}</p>
+    <p>Shared cells: ${escapeHtml(shared)}.</p>
+  `;
   els.compareResults.innerHTML = `
-    <div class="panel">
-      <h4>What the comparison shows</h4>
-      <p>${escapeHtml(cmp.comparison_explanation)}</p>
-      <p>Shared neurons: ${escapeHtml(shared)}. Shared regions: ${escapeHtml((cmp.shared_regions || []).join(", ") || "none")}.</p>
-    </div>
     <div class="compare-split">
-      ${side("Path A", cmp.path_a)}
-      ${side("Path B", cmp.path_b)}
+      ${side("Taste food", cmp.path_a)}
+      ${side("Watch TV", cmp.path_b)}
     </div>
   `;
 }
@@ -310,29 +319,26 @@ function bindSearch(input, suggestBox, kindSelect) {
   let timer = 0;
   input.addEventListener("input", () => {
     clearTimeout(timer);
-    timer = setTimeout(async () => {
+    timer = window.setTimeout(async () => {
       const q = input.value.trim();
-      if (q.length < 1 || kindSelect.value === "category") {
-        if (kindSelect.value === "category") {
-          const hits = CATEGORIES.filter((c) => c.toLowerCase().includes(q.toLowerCase()));
-          renderSuggest(suggestBox, hits.map((c) => ({ id: c, name: c, cell_type: "category" })), input, kindSelect);
-          return;
-        }
+      if (kindSelect.value === "category") {
+        const hits = CATEGORIES.filter((c) => c.toLowerCase().includes(q.toLowerCase() || ""));
+        renderSuggest(suggestBox, hits.map((c) => ({ id: c, name: c, cell_type: "category" })), input, kindSelect);
+        return;
+      }
+      if (q.length < 1) {
         suggestBox.hidden = true;
         return;
       }
       try {
-        const hits = await api.searchNeurons(q, 8);
-        renderSuggest(suggestBox, hits, input, kindSelect);
+        renderSuggest(suggestBox, await api.searchNeurons(q, 8), input, kindSelect);
       } catch {
         suggestBox.hidden = true;
       }
     }, 160);
   });
   document.addEventListener("click", (event) => {
-    if (!suggestBox.contains(event.target) && event.target !== input) {
-      suggestBox.hidden = true;
-    }
+    if (!suggestBox.contains(event.target) && event.target !== input) suggestBox.hidden = true;
   });
 }
 
@@ -345,70 +351,75 @@ function renderSuggest(box, hits, input, kindSelect) {
   box.innerHTML = hits
     .map(
       (n) =>
-        `<button type="button" data-id="${escapeHtml(n.id)}" data-name="${escapeHtml(n.name)}">
-          <strong>${escapeHtml(n.id)}</strong> · ${escapeHtml(n.name)} · ${escapeHtml(n.cell_type)}
-        </button>`
+        `<button type="button" data-id="${escapeHtml(n.id)}"><strong>${escapeHtml(n.id)}</strong> · ${escapeHtml(n.name)}</button>`
     )
     .join("");
   box.querySelectorAll("button").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (kindSelect.value === "category") {
-        input.value = btn.dataset.id;
-      } else {
-        kindSelect.value = "neuron";
-        input.value = btn.dataset.id;
-      }
+      if (kindSelect.value !== "category") kindSelect.value = "neuron";
+      input.value = btn.dataset.id;
       box.hidden = true;
     });
   });
 }
 
-els.findForm.addEventListener("submit", (event) => {
+els.findForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  runFind(
-    api.spec(els.sourceKind.value, els.sourceValue.value),
-    api.spec(els.destKind.value, els.destValue.value)
-  );
-});
-
-els.demoBtn.addEventListener("click", () => {
-  els.sourceKind.value = "neuron";
-  els.sourceValue.value = "R1";
-  els.destKind.value = "neuron";
-  els.destValue.value = "DNg13";
-  runFind(api.spec("neuron", "R1"), api.spec("neuron", "DNg13"), "Demo path: visual sensory → DNg13…");
-});
-
-els.compareForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  showBusy("Comparing Visual→Motor-style routes…");
+  state.activeId = null;
+  renderBoard();
+  setMood("idle", "idle", "Scientist mode is tracing a custom path.");
+  showBusy("Tracing…");
   try {
-    state.compare = await api.comparePaths(
-      {
-        source: api.spec(document.getElementById("ca-kind").value, document.getElementById("ca-value").value),
-        destination: api.spec(document.getElementById("ca-dk").value, document.getElementById("ca-dv").value),
-      },
-      {
-        source: api.spec(document.getElementById("cb-kind").value, document.getElementById("cb-value").value),
-        destination: api.spec(document.getElementById("cb-dk").value, document.getElementById("cb-dv").value),
-      }
+    state.result = await api.findPaths(
+      api.spec(els.sourceKind.value, els.sourceValue.value),
+      api.spec(els.destKind.value, els.destValue.value)
     );
-    renderCompare();
+    state.story = {
+      headline: "Custom search",
+      beats: ["You picked the start and end.", "Same rules: this is a wiring map, not a behavior recording."],
+    };
+    state.selectedPath = 0;
+    state.selectedNeuron = state.result.paths[0]?.neuron_ids[0] || null;
+    await refreshBranch();
+    renderStory();
+    renderExplore();
   } catch (error) {
     showError(error);
   }
 });
 
-els.modeExplore.addEventListener("click", () => setMode("explore"));
-els.modeCompare.addEventListener("click", () => setMode("compare"));
+els.demoBtn.addEventListener("click", () => playScenario("watch-tv"));
+
+els.compareTasteTv.addEventListener("click", async () => {
+  state.activeId = null;
+  renderBoard();
+  showBusy("Comparing taste and TV wiring…");
+  try {
+    state.compare = await api.comparePaths(
+      { source: api.spec("neuron", "GRN_sweet"), destination: api.spec("neuron", "MN_proboscis") },
+      { source: api.spec("neuron", "R1"), destination: api.spec("neuron", "DNg13") }
+    );
+    renderCompare();
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (error) {
+    showError(error);
+  }
+});
+
+els.scientistToggle.addEventListener("click", () => {
+  const open = !els.scientistPanel.open;
+  els.scientistPanel.open = open;
+  els.scientistToggle.setAttribute("aria-expanded", String(open));
+  if (open) els.scientistPanel.scrollIntoView({ behavior: "smooth" });
+});
 
 bindSearch(els.sourceValue, els.sourceSuggest, els.sourceKind);
 bindSearch(els.destValue, els.destSuggest, els.destKind);
 
 (async function boot() {
   try {
-    await loadJourneys();
-    await runFind(api.spec("neuron", "R1"), api.spec("neuron", "DNg13"), "Loading demo path: visual sensory → DNg13…");
+    state.scenarios = await api.scenarios();
+    renderBoard();
   } catch (error) {
     showError(error);
   }

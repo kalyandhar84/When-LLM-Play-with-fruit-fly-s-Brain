@@ -28,6 +28,10 @@ def get_journeys() -> list[dict]:
     return load_raw()["journeys"]
 
 
+def get_scenarios() -> list[dict]:
+    return load_raw().get("scenarios") or []
+
+
 def get_categories() -> list[str]:
     return load_raw()["categories"]
 

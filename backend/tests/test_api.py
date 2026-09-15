@@ -15,6 +15,17 @@ REQUIRED_JOURNEYS = {
     "auditory-to-motor",
 }
 
+REQUIRED_SCENARIOS = {
+    "taste-food",
+    "watch-tv",
+    "zapped",
+    "hot",
+    "cold",
+    "smell-yummy",
+    "hear-buzz",
+    "smell-bad",
+}
+
 
 def test_health(client):
     response = client.get("/api/health")
@@ -143,6 +154,21 @@ def test_search_and_hubs(client):
     assert hubs.status_code == 200
     assert hubs.json()
     assert "structural" in hubs.json()[0]["interpretation"].lower()
+
+
+def test_playful_scenarios(client):
+    response = client.get("/api/scenarios")
+    assert response.status_code == 200
+    scenarios = response.json()
+    ids = {s["id"] for s in scenarios}
+    assert REQUIRED_SCENARIOS <= ids
+    for scenario_id in REQUIRED_SCENARIOS:
+        packed = client.get(f"/api/scenarios/{scenario_id}/run")
+        assert packed.status_code == 200, scenario_id
+        body = packed.json()
+        assert body["result"]["paths"], scenario_id
+        assert body["story"]["beats"]
+        assert body["scenario"]["mood"]
 
 
 def test_unknown_neuron_404(client):

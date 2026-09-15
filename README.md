@@ -3,8 +3,10 @@
 Interactive “Google Maps for a nervous system” over a curated exploration subgraph of the
 **HHMI Janelia FlyEM Male CNS Connectome** (MaleCNS v1.0, released 2026-06-08, CC BY).
 
-Ask questions such as *how can visual information eventually reach a motor neuron?* and
-inspect structural routes: hops, synapse counts, anatomy, alternatives, branching, and hubs.
+The home screen is a **tap-to-play exhibit**: Taste Food, Watch TV, Zapped By Human,
+Hot, Cold, Smell Something Yummy, Hear a Buzz, Smell Something Bad. Each scene runs a
+real structural path on the teaching graph and tells a short story. Scientist mode
+(collapsed) still lets you search neurons by ID, name, type, region, or category.
 
 The full published Male CNS scale is about **166,000 neurons** and **125 million synapses**.
 This app does **not** load that entire volume. It uses a compact, curated graph grounded in
@@ -21,7 +23,8 @@ can be explored in a browser.
 - **Anatomical journey** — region-to-region stepper (optic lobe → central brain → VNC)
 - **Neuron importance / structural hubs** — degree and betweenness *inside this graph only*
 - **Compare two paths** — e.g. Visual → Motor vs Olfactory → Motor
-- **Guided journeys** — Visual to Movement, Olfactory to Descending Neuron, Taste to Motor Circuit, Visual Input to DNg13, Auditory to Motor
+- **Playful scenes** — Taste Food (sweet GRN → proboscis MN), Watch TV (R1 → DNg13), Zapped (bristle → DNp01 giant fiber), Hot / Cold (aristal HC/CC thermoreceptors), yummy / bad smells, Hear a Buzz (Johnston’s organ)
+- **Guided journeys** — Visual to Movement, Olfactory to Descending Neuron, Taste to Motor Circuit, Visual Input to DNg13, Auditory to Motor, plus hot/cold/touch scientist routes
 - **Why this path?** — ranking rationale (hops, bottleneck strength, diversity)
 - **Search** — neuron ID, name, type, region, or category (Visual, Olfactory, Auditory, Taste, Motor, Descending)
 - **Demo path** — visual sensory (R1) → DNg13 / motor circuitry
@@ -113,6 +116,8 @@ scripts/generate_connectome.py
 | POST | `/api/paths/find` | Multiple structural paths |
 | POST | `/api/paths/compare` | Compare two queries |
 | GET | `/api/journeys` | Guided journeys |
+| GET | `/api/scenarios` | Playful tap-to-play scenes |
+| GET | `/api/scenarios/{id}/run` | Run a scene and return story + paths |
 | GET | `/api/hubs` | Structural hubs |
 
 Example body for `POST /api/paths/find`:

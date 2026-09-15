@@ -101,6 +101,39 @@ def why_this_path(label: str, metrics: dict[str, Any], rank: int, total: int) ->
     return " ".join(reasons)
 
 
+def playful_story(scenario: dict, path: "NeuralPath | None") -> dict:
+    """Plain-language story beats for the tap-to-play exhibit. Structural, not causal."""
+    hook = scenario.get("hook") or scenario.get("title", "A fly has an experience.")
+    if not path or not path.steps:
+        return {
+            "headline": hook,
+            "beats": [
+                hook,
+                "No structural path showed up in this small exploration map.",
+                "That does not mean the fly cannot sense it — only that this toy graph did not connect those cells.",
+            ],
+        }
+
+    start = path.steps[0].from_neuron
+    end = path.steps[-1].to_neuron
+    mids = []
+    for step in path.steps[:-1]:
+        n = step.to_neuron
+        if n.id != end.id:
+            mids.append(n)
+    mid_names = ", ".join(n.name for n in mids[:3]) if mids else "a few relay cells"
+    regions = " → ".join(path.region_labels)
+    beats = [
+        hook,
+        f"Sensors like {start.name} in the {start.region_label} can pick that kind of cue up.",
+        f"On this wiring map the signal can hop {path.hop_count} times, visiting {mid_names}.",
+        f"It can reach {end.name} in the {end.region_label} — a {end.role} cell that belongs to movement-related circuitry.",
+        f"The anatomical trip is: {regions}.",
+        "This is a map of physical connections, not a video of the fly deciding or feeling something. Wiring is not the same as behavior.",
+    ]
+    return {"headline": hook, "beats": beats}
+
+
 def anatomical_journey(path: "NeuralPath") -> str:
     labels = path.region_labels
     if not labels:

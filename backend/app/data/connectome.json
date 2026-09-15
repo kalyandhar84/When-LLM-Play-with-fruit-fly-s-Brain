@@ -53,6 +53,8 @@
     "lh": "Lateral Horn",
     "sez": "Subesophageal Zone",
     "ammc": "Antennal Mechanosensory and Motor Center",
+    "arista": "Antennal Arista (Thermosensors)",
+    "pal": "Posterior Antennal Lobe",
     "wed": "Wedge",
     "sps": "Superior Posterior Slope",
     "neck": "Neck Connective",
@@ -824,10 +826,11 @@
       "side": "right",
       "categories": [
         "Auditory",
+        "Mechanosensory",
         "Sensory"
       ],
       "role": "sensory",
-      "description": "Auditory mechanosensory neuron from Johnston's organ.",
+      "description": "Johnston's organ neuron: antennal vibration used for hearing and mechanosensation.",
       "neurotransmitter": null,
       "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
     },
@@ -840,10 +843,11 @@
       "side": "right",
       "categories": [
         "Auditory",
+        "Mechanosensory",
         "Sensory"
       ],
       "role": "sensory",
-      "description": "Auditory sensory neuron conveying antennal vibration signals.",
+      "description": "Johnston's organ neuron conveying antennal vibration and wind-like mechanical cues.",
       "neurotransmitter": null,
       "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
     },
@@ -988,6 +992,22 @@
       "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
     },
     {
+      "id": "MN_proboscis",
+      "name": "Proboscis motor neuron",
+      "cell_type": "MN-proboscis",
+      "region": "sez",
+      "region_label": "Subesophageal Zone",
+      "side": "right",
+      "categories": [
+        "Taste",
+        "Motor"
+      ],
+      "role": "motor",
+      "description": "Representative feeding-related motor neuron for the proboscis / cibarial pump, a published Drosophila feeding output.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
       "id": "SPS_hub",
       "name": "SPS convergence hub",
       "cell_type": "SPS-hub",
@@ -1015,6 +1035,203 @@
       "role": "interneuron",
       "description": "Posterior slope-related neuron listed among DNg13 partners.",
       "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "HC_arista",
+      "name": "Hot-cell thermoreceptor",
+      "cell_type": "HC-arista",
+      "region": "arista",
+      "region_label": "Antennal Arista (Thermosensors)",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Hot",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Aristal hot-cell thermoreceptor (HC). Published Drosophila warmth sensor on the antennal arista.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "CC_arista",
+      "name": "Cold-cell thermoreceptor",
+      "cell_type": "CC-arista",
+      "region": "arista",
+      "region_label": "Antennal Arista (Thermosensors)",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Cold",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Aristal cold-cell thermoreceptor (CC / Ir21a family). Published Drosophila cool sensor.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PAL_hot",
+      "name": "PAL hot glomerulus relay",
+      "cell_type": "PAL-hot",
+      "region": "pal",
+      "region_label": "Posterior Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Hot"
+      ],
+      "role": "interneuron",
+      "description": "Posterior antennal lobe relay for hot-cell input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PAL_cold",
+      "name": "PAL cold glomerulus relay",
+      "cell_type": "PAL-cold",
+      "region": "pal",
+      "region_label": "Posterior Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Cold"
+      ],
+      "role": "interneuron",
+      "description": "Posterior antennal lobe relay for cold-cell input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "TPN_hot",
+      "name": "Thermosensory PN (hot)",
+      "cell_type": "tPN-hot",
+      "region": "pal",
+      "region_label": "Posterior Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Hot",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Thermosensory projection neuron carrying warmth-related PAL output toward central brain targets.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "TPN_cold",
+      "name": "Thermosensory PN (cold)",
+      "cell_type": "tPN-cold",
+      "region": "pal",
+      "region_label": "Posterior Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Temperature",
+        "Cold",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Thermosensory projection neuron carrying cool-related PAL output toward central brain targets.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "BR_mech",
+      "name": "Bristle mechanoreceptor",
+      "cell_type": "bristle-MR",
+      "region": "gng",
+      "region_label": "Gnathal Ganglia",
+      "side": "right",
+      "categories": [
+        "Mechanosensory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "External bristle mechanoreceptor \u2014 a classic Drosophila touch/wind sensor.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "mdIV",
+      "name": "Class IV md nociceptor",
+      "cell_type": "md-IV",
+      "region": "vnc",
+      "region_label": "Ventral Nerve Cord",
+      "side": "right",
+      "categories": [
+        "Mechanosensory",
+        "Nociception",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Multidendritic class IV nociceptor type used for noxious touch; adult and larval literature.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "FeCO",
+      "name": "Femoral chordotonal organ",
+      "cell_type": "FeCO",
+      "region": "vnc_t1",
+      "region_label": "Ventral Nerve Cord \u2014 T1 Leg Neuropil",
+      "side": "right",
+      "categories": [
+        "Mechanosensory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Femoral chordotonal organ neuron: leg mechanosensation / proprioception.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "GNG_mech",
+      "name": "GNG mechanosensory relay",
+      "cell_type": "GNG-mech",
+      "region": "gng",
+      "region_label": "Gnathal Ganglia",
+      "side": "right",
+      "categories": [
+        "Mechanosensory",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Gnathal relay collecting bristle and nociceptive touch toward descending escape cells.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AMMC_mech",
+      "name": "AMMC mechanosensory relay",
+      "cell_type": "AMMC-mech",
+      "region": "ammc",
+      "region_label": "Antennal Mechanosensory and Motor Center",
+      "side": "right",
+      "categories": [
+        "Mechanosensory"
+      ],
+      "role": "interneuron",
+      "description": "AMMC interneuron integrating JO and other antennal mechanosensory input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "DNp01",
+      "name": "DNp01 giant fiber",
+      "cell_type": "DNp01",
+      "region": "neck",
+      "region_label": "Neck Connective",
+      "side": "right",
+      "categories": [
+        "Motor",
+        "Descending",
+        "Mechanosensory"
+      ],
+      "role": "descending",
+      "description": "Giant-fiber-class descending neuron (DNp01) used in published Drosophila startle/escape circuitry.",
+      "neurotransmitter": null,
       "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
     }
   ],
@@ -1790,6 +2007,27 @@
       "claim_level": "structural_connectivity"
     },
     {
+      "source": "SEZ_IN1",
+      "target": "MN_proboscis",
+      "synapses": 88,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_taste",
+      "target": "MN_proboscis",
+      "synapses": 120,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GRN_sweet",
+      "target": "MN_proboscis",
+      "synapses": 36,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
       "source": "AOTU002",
       "target": "SPS_hub",
       "synapses": 26,
@@ -1856,6 +2094,195 @@
       "source": "LAL015",
       "target": "PS018",
       "synapses": 21,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "HC_arista",
+      "target": "PAL_hot",
+      "synapses": 190,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "CC_arista",
+      "target": "PAL_cold",
+      "synapses": 185,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PAL_hot",
+      "target": "TPN_hot",
+      "synapses": 140,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PAL_cold",
+      "target": "TPN_cold",
+      "synapses": 136,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_hot",
+      "target": "SPS_hub",
+      "synapses": 52,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_hot",
+      "target": "GNG532",
+      "synapses": 44,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_hot",
+      "target": "DNg97",
+      "synapses": 38,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_cold",
+      "target": "SPS_hub",
+      "synapses": 48,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_cold",
+      "target": "WED_aud",
+      "synapses": 40,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_cold",
+      "target": "LAL015",
+      "synapses": 34,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_cold",
+      "target": "DNg97",
+      "synapses": 36,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TPN_hot",
+      "target": "DNp56",
+      "synapses": 28,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "BR_mech",
+      "target": "GNG_mech",
+      "synapses": 160,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "mdIV",
+      "target": "GNG_mech",
+      "synapses": 148,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "mdIV",
+      "target": "IN19A015",
+      "synapses": 42,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "FeCO",
+      "target": "AMMC_mech",
+      "synapses": 90,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "FeCO",
+      "target": "IN19A015",
+      "synapses": 55,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "JO_A",
+      "target": "AMMC_mech",
+      "synapses": 70,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "JO_B",
+      "target": "AMMC_mech",
+      "synapses": 62,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AMMC_mech",
+      "target": "WED_aud",
+      "synapses": 80,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AMMC_mech",
+      "target": "DNp01",
+      "synapses": 95,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_mech",
+      "target": "DNp01",
+      "synapses": 170,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_mech",
+      "target": "DNg97",
+      "synapses": 60,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNp01",
+      "target": "LegMN_T1",
+      "synapses": 310,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNp01",
+      "target": "LegMN_T2",
+      "synapses": 240,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNp01",
+      "target": "IN19A015",
+      "synapses": 70,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_mech",
+      "target": "SPS_hub",
+      "synapses": 26,
       "note": "",
       "claim_level": "structural_connectivity"
     }
@@ -1940,6 +2367,232 @@
       "preferred_source": "JO_A",
       "preferred_destination": "LegMN_T2",
       "blurb": "Explore structural auditory pathways from Johnston\u2019s organ toward motor-related destinations."
+    },
+    {
+      "id": "hot-to-motor",
+      "title": "Hot Sensation to Motor",
+      "subtitle": "Aristal hot cells toward avoidance-related outputs",
+      "source_query": {
+        "kind": "category",
+        "value": "Hot"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Motor"
+      },
+      "preferred_source": "HC_arista",
+      "preferred_destination": "LegMN_T2",
+      "blurb": "Follow aristal hot-cell thermoreceptors through the posterior antennal lobe toward motor-related neurons."
+    },
+    {
+      "id": "cold-to-motor",
+      "title": "Cold Sensation to Motor",
+      "subtitle": "Aristal cold cells toward avoidance-related outputs",
+      "source_query": {
+        "kind": "category",
+        "value": "Cold"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Motor"
+      },
+      "preferred_source": "CC_arista",
+      "preferred_destination": "LegMN_T2",
+      "blurb": "Trace cool-sensing aristal cells toward descending and leg motor-related circuitry."
+    },
+    {
+      "id": "touch-to-escape",
+      "title": "Mechanosensory to Escape",
+      "subtitle": "Bristle / nociceptor touch toward the giant fiber",
+      "source_query": {
+        "kind": "category",
+        "value": "Mechanosensory"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNp01"
+      },
+      "preferred_source": "BR_mech",
+      "preferred_destination": "DNp01",
+      "blurb": "See how touch and noxious mechanosensation can structurally reach DNp01 (giant-fiber class) and leg motor neurons."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "taste-food",
+      "title": "Taste Food",
+      "emoji": "\ud83c\udf6f",
+      "mood": "food",
+      "pose": "eating",
+      "play_label": "Tap to taste",
+      "hook": "The fly lands on something sweet.",
+      "category": "Taste",
+      "preferred_source": "GRN_sweet",
+      "preferred_destination": "MN_proboscis",
+      "source_query": {
+        "kind": "neuron",
+        "value": "GRN_sweet"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "MN_proboscis"
+      },
+      "compare_with": "watch-tv",
+      "blurb": "Sugar hits the mouthparts. Can that taste wiring reach feeding or walking motors?"
+    },
+    {
+      "id": "watch-tv",
+      "title": "Watch TV",
+      "emoji": "\ud83d\udcfa",
+      "mood": "tv",
+      "pose": "watching",
+      "play_label": "Tap to watch",
+      "hook": "The fly stares at a glowing, flickering screen.",
+      "category": "Visual",
+      "preferred_source": "R1",
+      "preferred_destination": "DNg13",
+      "source_query": {
+        "kind": "neuron",
+        "value": "R1"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNg13"
+      },
+      "compare_with": "taste-food",
+      "blurb": "Light hits the eyes. Follow the official-style R1 \u2192 DNg13 visual\u2013motor map."
+    },
+    {
+      "id": "zapped",
+      "title": "Zapped By Human",
+      "emoji": "\u26a1",
+      "mood": "zap",
+      "pose": "jumping",
+      "play_label": "Tap to zap",
+      "hook": "A human swats, pokes, or startles the fly.",
+      "category": "Mechanosensory",
+      "preferred_source": "BR_mech",
+      "preferred_destination": "DNp01",
+      "source_query": {
+        "kind": "neuron",
+        "value": "BR_mech"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNp01"
+      },
+      "compare_with": "watch-tv",
+      "blurb": "Touch and startle sensors can structurally reach the giant-fiber escape neuron."
+    },
+    {
+      "id": "hot",
+      "title": "Hot Sensation",
+      "emoji": "\ud83d\udd25",
+      "mood": "hot",
+      "pose": "hot",
+      "play_label": "Tap the heat",
+      "hook": "The air (or the floor) gets too hot.",
+      "category": "Hot",
+      "preferred_source": "HC_arista",
+      "preferred_destination": "LegMN_T2",
+      "source_query": {
+        "kind": "neuron",
+        "value": "HC_arista"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "LegMN_T2"
+      },
+      "compare_with": "cold",
+      "blurb": "Aristal hot cells can connect, hop by hop, toward leg motor circuitry."
+    },
+    {
+      "id": "cold",
+      "title": "Cold Sensation",
+      "emoji": "\u2744\ufe0f",
+      "mood": "cold",
+      "pose": "shivering",
+      "play_label": "Tap the chill",
+      "hook": "A sudden chill hits the antenna.",
+      "category": "Cold",
+      "preferred_source": "CC_arista",
+      "preferred_destination": "LegMN_T2",
+      "source_query": {
+        "kind": "neuron",
+        "value": "CC_arista"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "LegMN_T2"
+      },
+      "compare_with": "hot",
+      "blurb": "Cool-sensing cells in the arista have a structural path toward movement-related neurons."
+    },
+    {
+      "id": "smell-yummy",
+      "title": "Smell Something Yummy",
+      "emoji": "\ud83c\udf53",
+      "mood": "yummy",
+      "pose": "sniffing",
+      "play_label": "Tap to sniff",
+      "hook": "A tasty smell (like fruit or vinegar) drifts by.",
+      "category": "Olfactory",
+      "preferred_source": "ORN_DM1",
+      "preferred_destination": "DNg13",
+      "source_query": {
+        "kind": "neuron",
+        "value": "ORN_DM1"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNg13"
+      },
+      "compare_with": "smell-bad",
+      "blurb": "Food-odor receptor neurons can structurally reach descending motor-related cells."
+    },
+    {
+      "id": "hear-buzz",
+      "title": "Hear a Buzz",
+      "emoji": "\ud83c\udfb5",
+      "mood": "buzz",
+      "pose": "listening",
+      "play_label": "Tap to listen",
+      "hook": "The antennae pick up a buzz or vibration.",
+      "category": "Auditory",
+      "preferred_source": "JO_A",
+      "preferred_destination": "LegMN_T2",
+      "source_query": {
+        "kind": "neuron",
+        "value": "JO_A"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "LegMN_T2"
+      },
+      "compare_with": "zapped",
+      "blurb": "Johnston\u2019s organ is a real fly ear \u2014 and a vibration sensor \u2014 with paths toward the legs."
+    },
+    {
+      "id": "smell-bad",
+      "title": "Smell Something Bad",
+      "emoji": "\ud83e\udd22",
+      "mood": "stinky",
+      "pose": "recoil",
+      "play_label": "Tap the stink",
+      "hook": "An unpleasant odor hits the antennae.",
+      "category": "Olfactory",
+      "preferred_source": "ORN_DL5",
+      "preferred_destination": "DNp56",
+      "source_query": {
+        "kind": "neuron",
+        "value": "ORN_DL5"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNp56"
+      },
+      "compare_with": "smell-yummy",
+      "blurb": "A different olfactory channel can still reach descending neurons \u2014 a separate structural route."
     }
   ],
   "categories": [
@@ -1950,6 +2603,11 @@
     "Motor",
     "Descending",
     "Sensory",
-    "Central"
+    "Central",
+    "Temperature",
+    "Hot",
+    "Cold",
+    "Mechanosensory",
+    "Nociception"
   ]
 }

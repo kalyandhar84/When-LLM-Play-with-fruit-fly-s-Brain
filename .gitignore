@@ -12,3 +12,5 @@ frontend/dist/
 *.log
 .coverage
 htmlcov/
+.playwright-mcp/
+npf-ui-verify.png

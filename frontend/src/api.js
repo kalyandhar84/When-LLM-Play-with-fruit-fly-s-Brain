@@ -19,12 +19,12 @@ async function request(path, options = {}) {
 }
 
 export const health = () => request("/health");
-export const meta = () => request("/meta");
 export const journeys = () => request("/journeys");
+export const scenarios = () => request("/scenarios");
+export const runScenario = (id) => request(`/scenarios/${encodeURIComponent(id)}/run`);
 export const hubs = () => request("/hubs?limit=8");
 export const searchNeurons = (q, limit = 12) =>
   request(`/neurons?q=${encodeURIComponent(q)}&limit=${limit}`);
-export const neighbors = (id) => request(`/neurons/${encodeURIComponent(id)}/neighbors`);
 export const branch = (neuron_id, limit = 12) =>
   request("/branch", {
     method: "POST",

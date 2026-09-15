@@ -9,11 +9,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from .explain import playful_story
 from .graph import (
     get_categories,
     get_journeys,
     get_meta,
     get_regions,
+    get_scenarios,
     neighbors,
     neurons_by_id,
     search_neurons,
@@ -107,6 +109,30 @@ def paths_compare(body: CompareRequest):
 @app.get("/api/journeys")
 def journeys():
     return get_journeys()
+
+
+@app.get("/api/scenarios")
+def scenarios():
+    return get_scenarios()
+
+
+@app.get("/api/scenarios/{scenario_id}/run")
+def run_scenario(scenario_id: str):
+    match = next((s for s in get_scenarios() if s["id"] == scenario_id), None)
+    if not match:
+        raise HTTPException(404, f"Scenario '{scenario_id}' not found")
+    req = PathFindRequest(
+        source={"kind": "neuron", "value": match["preferred_source"]},
+        destination={"kind": "neuron", "value": match["preferred_destination"]},
+        max_paths=5,
+    )
+    result = find_paths(req)
+    top = result.paths[0] if result.paths else None
+    return {
+        "scenario": match,
+        "result": result.model_dump(),
+        "story": playful_story(match, top),
+    }
 
 
 @app.get("/api/journeys/{journey_id}/run")

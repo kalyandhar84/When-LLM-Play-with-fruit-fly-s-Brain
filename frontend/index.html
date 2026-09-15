@@ -3,191 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neural Path Finder — Male CNS Connectome</title>
+    <title>Neural Path Finder — Play a fly’s day</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body>
+  <body data-mood="idle" data-pose="idle">
     <div class="aurora" aria-hidden="true"></div>
     <header class="topbar">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true"></span>
         <div>
-          <p class="eyebrow">HHMI Janelia FlyEM · MaleCNS v1.0</p>
+          <p class="eyebrow">A tiny fly’s nervous system · play mode</p>
           <h1>Neural Path Finder</h1>
         </div>
       </div>
-      <nav class="top-actions">
-        <button class="ghost" id="mode-explore" type="button" aria-pressed="true">Explore</button>
-        <button class="ghost" id="mode-compare" type="button" aria-pressed="false">Compare two paths</button>
-      </nav>
+      <button class="ghost" id="scientist-toggle" type="button" aria-expanded="false">Scientist mode</button>
     </header>
 
     <main>
-      <section class="hero">
-        <p class="kicker">Google Maps for a nervous system</p>
-        <h2>How can visual information eventually reach a motor neuron?</h2>
-        <p class="lede">
-          Trace structural routes through a curated exploration subgraph of the adult male fruit fly
-          central nervous system — grounded in published cell types and the official
-          <strong>R1–R6 → DNg13</strong> visual–motor example.
-        </p>
+      <section class="hero-play">
+        <div class="mascot-stage" id="mascot-stage">
+          <svg class="fly" id="fly-mascot" viewBox="0 0 160 140" role="img" aria-label="Cute fruit fly mascot">
+            <ellipse class="wing left" cx="38" cy="58" rx="34" ry="16" />
+            <ellipse class="wing right" cx="122" cy="58" rx="34" ry="16" />
+            <ellipse class="body" cx="80" cy="78" rx="28" ry="36" />
+            <ellipse class="stripe" cx="80" cy="86" rx="22" ry="8" />
+            <circle class="head" cx="80" cy="40" r="22" />
+            <circle class="eye l" cx="70" cy="38" r="7" />
+            <circle class="eye r" cx="90" cy="38" r="7" />
+            <circle class="pupil l" cx="72" cy="39" r="3" />
+            <circle class="pupil r" cx="92" cy="39" r="3" />
+            <path class="smile" d="M72 48 Q80 54 88 48" />
+            <line class="leg" x1="62" y1="100" x2="48" y2="124" />
+            <line class="leg" x1="80" y1="112" x2="80" y2="130" />
+            <line class="leg" x1="98" y1="100" x2="112" y2="124" />
+            <line class="antenna l" x1="68" y1="22" x2="54" y2="8" />
+            <line class="antenna r" x1="92" y1="22" x2="106" y2="8" />
+            <circle class="knob l" cx="54" cy="8" r="3" />
+            <circle class="knob r" cx="106" cy="8" r="3" />
+            <text class="prop" x="118" y="28">✨</text>
+          </svg>
+          <p class="mascot-line" id="mascot-line">Pick a moment in the fly’s day.</p>
+        </div>
+        <div class="hero-copy">
+          <p class="kicker">Like a game · still real wiring</p>
+          <h2>What happens inside a fly when it tastes, watches, or gets zapped?</h2>
+          <p class="lede">
+            Tap a scene. Watch a cartoon path hop from sensors toward movement cells.
+            It is a map of connections — not a movie of the fly’s feelings.
+          </p>
+        </div>
       </section>
 
       <aside class="disclaimer" role="note">
-        <strong>Structural, not causal.</strong>
-        Synapse counts describe anatomy in this graph. Connectivity does not prove that information
-        flows this way during behavior, and this product makes no medical or causal claims.
+        <strong>Just a wiring map.</strong>
+        These paths show which cells are physically linked in a small teaching graph.
+        They do <em>not</em> prove the fly thought, decided, or felt that way — and this is not medical advice.
       </aside>
 
-      <section class="journeys" id="journeys">
+      <section class="board-wrap">
         <div class="section-head">
-          <h3>Guided scientific journeys</h3>
-          <p>Start from a published motif instead of a blank query.</p>
+          <h3>Pick a scene</h3>
+          <p>One tap. A story. A glowing path.</p>
         </div>
-        <div class="journey-grid" id="journey-grid"></div>
+        <div class="scenario-board" id="scenario-board"></div>
+        <div class="quick-compare">
+          <button class="primary big" type="button" id="compare-taste-tv">
+            Taste food vs watch TV — do they meet?
+          </button>
+        </div>
       </section>
 
-      <section class="console" id="explore-console">
-        <div class="section-head">
-          <h3>Find a neural path</h3>
-          <p>Search by neuron ID, name, type, region, or category.</p>
-        </div>
+      <section class="results" id="results" hidden>
+        <div class="story-card" id="story-card"></div>
+        <div class="status" id="status"></div>
+        <div id="explore-results"></div>
+        <div id="compare-results" hidden></div>
+      </section>
+
+      <details class="scientist" id="scientist-panel">
+        <summary>Scientist mode — search neurons yourself</summary>
+        <p class="scientist-note">Same toy graph. Same structural-only rules. Type IDs, names, regions, or categories.</p>
         <form class="pickers" id="find-form">
-          <fieldset class="picker" data-role="source">
+          <fieldset class="picker">
             <legend>Origin</legend>
-            <label>
-              Kind
-              <select name="sourceKind" id="source-kind">
+            <label>Kind
+              <select id="source-kind">
                 <option value="category">Category</option>
-                <option value="neuron">Neuron ID</option>
+                <option value="neuron" selected>Neuron ID</option>
                 <option value="name">Name</option>
                 <option value="type">Cell type</option>
                 <option value="region">Region</option>
               </select>
             </label>
-            <label class="grow">
-              Value
-              <input
-                id="source-value"
-                name="sourceValue"
-                type="search"
-                autocomplete="off"
-                value="Visual"
-                placeholder="Visual, R1, retina…"
-              />
+            <label class="grow">Value
+              <input id="source-value" type="search" autocomplete="off" value="R1" />
             </label>
             <div class="suggest" id="source-suggest" hidden></div>
           </fieldset>
           <span class="to-arrow" aria-hidden="true">→</span>
-          <fieldset class="picker" data-role="destination">
+          <fieldset class="picker">
             <legend>Destination</legend>
-            <label>
-              Kind
-              <select name="destKind" id="dest-kind">
+            <label>Kind
+              <select id="dest-kind">
                 <option value="category">Category</option>
-                <option value="neuron">Neuron ID</option>
+                <option value="neuron" selected>Neuron ID</option>
                 <option value="name">Name</option>
                 <option value="type">Cell type</option>
                 <option value="region">Region</option>
               </select>
             </label>
-            <label class="grow">
-              Value
-              <input
-                id="dest-value"
-                name="destValue"
-                type="search"
-                autocomplete="off"
-                value="Motor"
-                placeholder="Motor, DNg13, VNC…"
-              />
+            <label class="grow">Value
+              <input id="dest-value" type="search" autocomplete="off" value="DNg13" />
             </label>
             <div class="suggest" id="dest-suggest" hidden></div>
           </fieldset>
           <div class="console-actions">
             <button class="primary" type="submit">Trace pathway</button>
-            <button class="ghost" type="button" id="demo-btn">Demo: R1 → DNg13</button>
+            <button class="ghost" type="button" id="demo-btn">Classic demo: R1 → DNg13</button>
           </div>
         </form>
-      </section>
-
-      <section class="console compare-console" id="compare-console" hidden>
-        <div class="section-head">
-          <h3>Compare two paths</h3>
-          <p>Preset: Visual → Motor versus Olfactory → Motor. Edit either side, then compare.</p>
-        </div>
-        <form id="compare-form" class="compare-form">
-          <div class="compare-cols">
-            <fieldset>
-              <legend>Path A</legend>
-              <label>Kind / value
-                <div class="inline">
-                  <select id="ca-kind">
-                    <option value="category" selected>Category</option>
-                    <option value="neuron">Neuron ID</option>
-                    <option value="type">Type</option>
-                  </select>
-                  <input id="ca-value" value="Visual" />
-                </div>
-              </label>
-              <label>Destination
-                <div class="inline">
-                  <select id="ca-dk">
-                    <option value="category" selected>Category</option>
-                    <option value="neuron">Neuron ID</option>
-                  </select>
-                  <input id="ca-dv" value="Motor" />
-                </div>
-              </label>
-            </fieldset>
-            <fieldset>
-              <legend>Path B</legend>
-              <label>Kind / value
-                <div class="inline">
-                  <select id="cb-kind">
-                    <option value="category" selected>Category</option>
-                    <option value="neuron">Neuron ID</option>
-                    <option value="type">Type</option>
-                  </select>
-                  <input id="cb-value" value="Olfactory" />
-                </div>
-              </label>
-              <label>Destination
-                <div class="inline">
-                  <select id="cb-dk">
-                    <option value="category" selected>Category</option>
-                    <option value="neuron">Neuron ID</option>
-                  </select>
-                  <input id="cb-dv" value="Motor" />
-                </div>
-              </label>
-            </fieldset>
-          </div>
-          <button class="primary" type="submit">Compare routes</button>
-        </form>
-      </section>
-
-      <section class="results" id="results" hidden>
-        <div class="status" id="status"></div>
-        <div id="explore-results"></div>
-        <div id="compare-results" hidden></div>
-      </section>
+      </details>
     </main>
 
     <footer class="site-footer">
       <p>
-        Exploration graph grounded in the
-        <a href="https://www.janelia.org/project-team/flyem/male-cns-connectome" target="_blank" rel="noreferrer">
-          Janelia Male CNS Connectome
-        </a>
-        (MaleCNS v1.0, 2026-06-08, CC BY). Full published scale is ~166k neurons / ~125M synapses;
-        this app uses a compact curated subgraph.
+        Teaching graph from the
+        <a href="https://www.janelia.org/project-team/flyem/male-cns-connectome" target="_blank" rel="noreferrer">Janelia Male CNS Connectome</a>
+        (MaleCNS v1.0, CC BY). The real fly has ~166k neurons and ~125M synapses — this is a playground slice.
       </p>
       <ul class="refs">
         <li><a href="https://www.janelia.org/project-team/flyem/male-cns-connectome" target="_blank" rel="noreferrer">Janelia Male CNS</a></li>
