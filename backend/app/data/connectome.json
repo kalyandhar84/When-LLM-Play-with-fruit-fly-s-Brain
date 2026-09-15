@@ -1,0 +1,1955 @@
+{
+  "meta": {
+    "product": "Neural Path Finder",
+    "dataset": "HHMI Janelia FlyEM Male CNS Connectome",
+    "dataset_version": "MaleCNS v1.0",
+    "dataset_released": "2026-06-08",
+    "license": "CC BY",
+    "organism": "Drosophila melanogaster (adult male)",
+    "full_scale": {
+      "neurons": 166000,
+      "synapses": 125000000,
+      "note": "Full published Male CNS scale; this app uses a curated exploration subgraph."
+    },
+    "references": [
+      {
+        "name": "Janelia Male CNS Connectome",
+        "url": "https://www.janelia.org/project-team/flyem/male-cns-connectome"
+      },
+      {
+        "name": "MaleCNS project page",
+        "url": "https://male-cns.janelia.org/"
+      },
+      {
+        "name": "NeuPrint",
+        "url": "https://neuprint.janelia.org/"
+      },
+      {
+        "name": "Male CNS Cell Type Explorer \u2014 DNg13",
+        "url": "https://reiserlab.github.io/celltype-explorer-drosophila-male-cns/types/DNg13.html"
+      },
+      {
+        "name": "Neuroglancer MaleCNS v1.0",
+        "url": "https://neuroglancer-demo.appspot.com/#!gs://flyem-male-cns/v1.0/male-cns-v1.0.jso"
+      }
+    ],
+    "disclaimer": "Connectivity here is structural (synaptic anatomy). Structural links do not by themselves prove causal activity flow during real behavior. This product is for exploration and education, not medical or biological conclusions.",
+    "graph_note": "Neuron types and several synapse strengths are grounded in Male CNS Cell Type Explorer / published circuit motifs (especially DNg13 partners and the R1\u2013R6 \u2192 DNg13 example). The graph is intentionally compact for interactive path finding."
+  },
+  "regions": {
+    "retina": "Retina / Photoreceptors",
+    "lamina": "Lamina (Optic Lobe)",
+    "medulla": "Medulla (Optic Lobe)",
+    "lobula": "Lobula (Optic Lobe)",
+    "lobula_plate": "Lobula Plate (Optic Lobe)",
+    "aotu": "Anterior Optic Tubercle",
+    "avlp": "Anterior Ventrolateral Protocerebrum",
+    "pvlp": "Posterior Ventrolateral Protocerebrum",
+    "lal": "Lateral Accessory Lobe",
+    "ves": "Vest",
+    "gng": "Gnathal Ganglia",
+    "al": "Antennal Lobe",
+    "mb": "Mushroom Body",
+    "lh": "Lateral Horn",
+    "sez": "Subesophageal Zone",
+    "ammc": "Antennal Mechanosensory and Motor Center",
+    "wed": "Wedge",
+    "sps": "Superior Posterior Slope",
+    "neck": "Neck Connective",
+    "vnc_t1": "Ventral Nerve Cord \u2014 T1 Leg Neuropil",
+    "vnc_t2": "Ventral Nerve Cord \u2014 T2 Leg Neuropil",
+    "vnc_t3": "Ventral Nerve Cord \u2014 T3 Leg Neuropil",
+    "vnc": "Ventral Nerve Cord",
+    "central_brain": "Central Brain"
+  },
+  "neurons": [
+    {
+      "id": "R1",
+      "name": "R1 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor that detects light and begins visual object detection pathways.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "R2",
+      "name": "R2 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor contributing to motion and object vision.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "R3",
+      "name": "R3 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor in the R1\u2013R6 group highlighted in Janelia visual\u2013motor examples.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "R4",
+      "name": "R4 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor feeding lamina circuitry.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "R5",
+      "name": "R5 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor in early visual transduction.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "R6",
+      "name": "R6 photoreceptor",
+      "cell_type": "R1-R6",
+      "region": "retina",
+      "region_label": "Retina / Photoreceptors",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Outer photoreceptor completing the R1\u2013R6 visual receptor group.",
+      "neurotransmitter": "Histamine",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "L1",
+      "name": "L1 lamina neuron",
+      "cell_type": "L1",
+      "region": "lamina",
+      "region_label": "Lamina (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lamina monopolar neuron that relays photoreceptor signals into the medulla.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "L2",
+      "name": "L2 lamina neuron",
+      "cell_type": "L2",
+      "region": "lamina",
+      "region_label": "Lamina (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lamina monopolar neuron involved in motion-related visual processing.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "L3",
+      "name": "L3 lamina neuron",
+      "cell_type": "L3",
+      "region": "lamina",
+      "region_label": "Lamina (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lamina neuron contributing to feature pathways beyond elementary motion.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "Mi1",
+      "name": "Mi1 medulla intrinsic",
+      "cell_type": "Mi1",
+      "region": "medulla",
+      "region_label": "Medulla (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Medulla intrinsic neuron in ON-pathway visual computation.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "Tm3",
+      "name": "Tm3 transmedullary",
+      "cell_type": "Tm3",
+      "region": "medulla",
+      "region_label": "Medulla (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Transmedullary neuron carrying medulla signals toward deeper optic lobe layers.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "TmY3",
+      "name": "TmY3 neuron",
+      "cell_type": "TmY3",
+      "region": "medulla",
+      "region_label": "Medulla (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "TmY neuron linking medulla and lobula complex processing.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "T4",
+      "name": "T4 directional neuron",
+      "cell_type": "T4",
+      "region": "medulla",
+      "region_label": "Medulla (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Direction-selective neuron contributing to motion vision.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "T5",
+      "name": "T5 directional neuron",
+      "cell_type": "T5",
+      "region": "lobula",
+      "region_label": "Lobula (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Direction-selective neuron in lobula motion pathways.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LC10",
+      "name": "LC10 lobula columnar",
+      "cell_type": "LC10",
+      "region": "lobula",
+      "region_label": "Lobula (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lobula columnar projection neuron associated with object-related visual features.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LC11",
+      "name": "LC11 lobula columnar",
+      "cell_type": "LC11",
+      "region": "lobula",
+      "region_label": "Lobula (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lobula columnar neuron projecting visual information into central brain targets.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LoVP90b",
+      "name": "LoVP90b",
+      "cell_type": "LoVP90b",
+      "region": "lobula",
+      "region_label": "Lobula (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lobula visual projection type listed among Male CNS partners near descending circuits.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LoVP92",
+      "name": "LoVP92",
+      "cell_type": "LoVP92",
+      "region": "lobula",
+      "region_label": "Lobula (Optic Lobe)",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Lobula visual projection neuron type with Male CNS connectivity toward descending circuitry.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AOTU002",
+      "name": "AOTU002",
+      "cell_type": "AOTU002",
+      "region": "aotu",
+      "region_label": "Anterior Optic Tubercle",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "Anterior optic tubercle neuron type; Male CNS lists AOTU002 variants among DNg13 upstream partners.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AOTU015",
+      "name": "AOTU015",
+      "cell_type": "AOTU015",
+      "region": "aotu",
+      "region_label": "Anterior Optic Tubercle",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "AOTU projection neuron linking optic information into central brain sensorimotor areas.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AOTU016",
+      "name": "AOTU016_c",
+      "cell_type": "AOTU016",
+      "region": "aotu",
+      "region_label": "Anterior Optic Tubercle",
+      "side": "right",
+      "categories": [
+        "Visual"
+      ],
+      "role": "interneuron",
+      "description": "AOTU type with Male CNS connectivity toward DNg13-related circuits.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LAL073",
+      "name": "LAL073",
+      "cell_type": "LAL073",
+      "region": "lal",
+      "region_label": "Lateral Accessory Lobe",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Lateral accessory lobe neuron; strong Male CNS upstream partner of DNg13.",
+      "neurotransmitter": "Glu",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LAL083",
+      "name": "LAL083",
+      "cell_type": "LAL083",
+      "region": "lal",
+      "region_label": "Lateral Accessory Lobe",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "LAL neuron type contributing to descending-neuron input.",
+      "neurotransmitter": "Glu",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LAL015",
+      "name": "LAL015",
+      "cell_type": "LAL015",
+      "region": "lal",
+      "region_label": "Lateral Accessory Lobe",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "LAL intermediate with documented Male CNS connectivity toward DNg13.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "VES200m",
+      "name": "VES200m",
+      "cell_type": "VES200m",
+      "region": "ves",
+      "region_label": "Vest",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Vest neuron group; top Male CNS upstream partner type of DNg13 by synapse count.",
+      "neurotransmitter": "Glu",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "VES045",
+      "name": "VES045",
+      "cell_type": "VES045",
+      "region": "ves",
+      "region_label": "Vest",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Vest neuron providing structural input toward DNg13.",
+      "neurotransmitter": "GABA",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "VES005",
+      "name": "VES005",
+      "cell_type": "VES005",
+      "region": "ves",
+      "region_label": "Vest",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Vest intermediate in descending motor pathways.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "CB0244",
+      "name": "CB0244",
+      "cell_type": "CB0244",
+      "region": "central_brain",
+      "region_label": "Central Brain",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Central brain neuron listed among strong DNg13 upstream partners.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "GNG532",
+      "name": "GNG532",
+      "cell_type": "GNG532",
+      "region": "gng",
+      "region_label": "Gnathal Ganglia",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Gnathal ganglia neuron contributing inputs toward DNg13.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AVLP713m",
+      "name": "AVLP713m",
+      "cell_type": "AVLP713m",
+      "region": "avlp",
+      "region_label": "Anterior Ventrolateral Protocerebrum",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "AVLP neuron linking visual-related areas into descending circuits.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PVLP201m",
+      "name": "PVLP201m_d",
+      "cell_type": "PVLP201m",
+      "region": "pvlp",
+      "region_label": "Posterior Ventrolateral Protocerebrum",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "PVLP neuron near visual projection targets in Male CNS annotations.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "WED_vis",
+      "name": "WED visual relay",
+      "cell_type": "WED-relay",
+      "region": "wed",
+      "region_label": "Wedge",
+      "side": "right",
+      "categories": [
+        "Visual",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Wedge relay used here as an alternate visual\u2013descending route.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "DNg13",
+      "name": "DNg13 descending neuron",
+      "cell_type": "DNg13",
+      "region": "neck",
+      "region_label": "Neck Connective",
+      "side": "right",
+      "categories": [
+        "Motor",
+        "Descending"
+      ],
+      "role": "descending",
+      "description": "Descending neuron highlighted by Janelia as a visual\u2013motor pathway endpoint from R1\u2013R6. Strong outputs into leg neuropils.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "DNp56",
+      "name": "DNp56 descending neuron",
+      "cell_type": "DNp56",
+      "region": "neck",
+      "region_label": "Neck Connective",
+      "side": "right",
+      "categories": [
+        "Motor",
+        "Descending"
+      ],
+      "role": "descending",
+      "description": "Descending neuron type that also appears among Male CNS partners near DNg13 circuitry.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "DNg97",
+      "name": "DNg97 descending neuron",
+      "cell_type": "DNg97",
+      "region": "neck",
+      "region_label": "Neck Connective",
+      "side": "right",
+      "categories": [
+        "Motor",
+        "Descending"
+      ],
+      "role": "descending",
+      "description": "Descending neuron participating in brain-to-VNC communication.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "IN19A015",
+      "name": "IN19A015 VNC interneuron",
+      "cell_type": "IN19A015",
+      "region": "vnc",
+      "region_label": "Ventral Nerve Cord",
+      "side": "right",
+      "categories": [
+        "Motor"
+      ],
+      "role": "interneuron",
+      "description": "VNC interneuron type listed among DNg13-related Male CNS partners.",
+      "neurotransmitter": "GABA",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LegMN_T1",
+      "name": "T1 leg motor neuron",
+      "cell_type": "LegMN-T1",
+      "region": "vnc_t1",
+      "region_label": "Ventral Nerve Cord \u2014 T1 Leg Neuropil",
+      "side": "right",
+      "categories": [
+        "Motor"
+      ],
+      "role": "motor",
+      "description": "Representative front-leg motor-related neuron in T1 neuropil (DNg13 strongly outputs to LegNp(T1)).",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LegMN_T2",
+      "name": "T2 leg motor neuron",
+      "cell_type": "LegMN-T2",
+      "region": "vnc_t2",
+      "region_label": "Ventral Nerve Cord \u2014 T2 Leg Neuropil",
+      "side": "right",
+      "categories": [
+        "Motor"
+      ],
+      "role": "motor",
+      "description": "Representative mid-leg motor-related neuron in T2 neuropil.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LegMN_T3",
+      "name": "T3 leg motor neuron",
+      "cell_type": "LegMN-T3",
+      "region": "vnc_t3",
+      "region_label": "Ventral Nerve Cord \u2014 T3 Leg Neuropil",
+      "side": "right",
+      "categories": [
+        "Motor"
+      ],
+      "role": "motor",
+      "description": "Representative hind-leg motor-related neuron in T3 neuropil.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "ORN_DM1",
+      "name": "ORN DM1",
+      "cell_type": "ORN-DM1",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Olfactory receptor neuron tuned to antennal lobe glomerulus DM1.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "ORN_VA1v",
+      "name": "ORN VA1v",
+      "cell_type": "ORN-VA1v",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Olfactory receptor neuron associated with pheromone-related glomerulus VA1v.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "ORN_DL5",
+      "name": "ORN DL5",
+      "cell_type": "ORN-DL5",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Olfactory receptor neuron feeding glomerulus DL5.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PN_DM1",
+      "name": "Projection neuron DM1",
+      "cell_type": "uPN-DM1",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory"
+      ],
+      "role": "interneuron",
+      "description": "Uniglomerular projection neuron carrying DM1 olfactory information to MB and LH.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PN_VA1v",
+      "name": "Projection neuron VA1v",
+      "cell_type": "uPN-VA1v",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory"
+      ],
+      "role": "interneuron",
+      "description": "Projection neuron for VA1v olfactory channel.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PN_DL5",
+      "name": "Projection neuron DL5",
+      "cell_type": "uPN-DL5",
+      "region": "al",
+      "region_label": "Antennal Lobe",
+      "side": "right",
+      "categories": [
+        "Olfactory"
+      ],
+      "role": "interneuron",
+      "description": "Projection neuron for DL5 olfactory channel.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "KC_ab",
+      "name": "Kenyon cell \u03b1\u03b2",
+      "cell_type": "KC-ab",
+      "region": "mb",
+      "region_label": "Mushroom Body",
+      "side": "right",
+      "categories": [
+        "Olfactory"
+      ],
+      "role": "interneuron",
+      "description": "Mushroom body Kenyon cell integrating olfactory projection-neuron input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "MBON35",
+      "name": "MBON35",
+      "cell_type": "MBON35",
+      "region": "mb",
+      "region_label": "Mushroom Body",
+      "side": "right",
+      "categories": [
+        "Olfactory",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Mushroom body output neuron; Male CNS lists MBON35 among DNg13 upstream partners.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "LH_ON1",
+      "name": "Lateral horn ON1",
+      "cell_type": "LH-ON1",
+      "region": "lh",
+      "region_label": "Lateral Horn",
+      "side": "right",
+      "categories": [
+        "Olfactory"
+      ],
+      "role": "interneuron",
+      "description": "Lateral horn neuron participating in innate olfactory routes.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "SMP471",
+      "name": "SMP471",
+      "cell_type": "SMP471",
+      "region": "central_brain",
+      "region_label": "Central Brain",
+      "side": "right",
+      "categories": [
+        "Olfactory",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Superior medial protocerebrum neuron listed among DNg13 partners in Male CNS.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "JO_A",
+      "name": "Johnston's organ A",
+      "cell_type": "JO-A",
+      "region": "ammc",
+      "region_label": "Antennal Mechanosensory and Motor Center",
+      "side": "right",
+      "categories": [
+        "Auditory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Auditory mechanosensory neuron from Johnston's organ.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "JO_B",
+      "name": "Johnston's organ B",
+      "cell_type": "JO-B",
+      "region": "ammc",
+      "region_label": "Antennal Mechanosensory and Motor Center",
+      "side": "right",
+      "categories": [
+        "Auditory",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Auditory sensory neuron conveying antennal vibration signals.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AMMC_A1",
+      "name": "AMMC A1",
+      "cell_type": "AMMC-A1",
+      "region": "ammc",
+      "region_label": "Antennal Mechanosensory and Motor Center",
+      "side": "right",
+      "categories": [
+        "Auditory"
+      ],
+      "role": "interneuron",
+      "description": "First-order auditory interneuron in the AMMC.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AMMC_B1",
+      "name": "AMMC B1",
+      "cell_type": "AMMC-B1",
+      "region": "ammc",
+      "region_label": "Antennal Mechanosensory and Motor Center",
+      "side": "right",
+      "categories": [
+        "Auditory"
+      ],
+      "role": "interneuron",
+      "description": "Auditory interneuron integrating JO input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "WED_aud",
+      "name": "WED auditory relay",
+      "cell_type": "WED-aud",
+      "region": "wed",
+      "region_label": "Wedge",
+      "side": "right",
+      "categories": [
+        "Auditory",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Wedge neuron linking auditory pathways into central sensorimotor areas.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "AVLP_aud",
+      "name": "AVLP auditory relay",
+      "cell_type": "AVLP-aud",
+      "region": "avlp",
+      "region_label": "Anterior Ventrolateral Protocerebrum",
+      "side": "right",
+      "categories": [
+        "Auditory",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "AVLP relay for auditory information approaching descending neurons.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "GRN_sweet",
+      "name": "Sweet GRN",
+      "cell_type": "GRN-sweet",
+      "region": "sez",
+      "region_label": "Subesophageal Zone",
+      "side": "right",
+      "categories": [
+        "Taste",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Gustatory receptor neuron detecting sweet tastants.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "GRN_bitter",
+      "name": "Bitter GRN",
+      "cell_type": "GRN-bitter",
+      "region": "sez",
+      "region_label": "Subesophageal Zone",
+      "side": "right",
+      "categories": [
+        "Taste",
+        "Sensory"
+      ],
+      "role": "sensory",
+      "description": "Gustatory receptor neuron detecting bitter tastants.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "SEZ_IN1",
+      "name": "SEZ interneuron 1",
+      "cell_type": "SEZ-IN1",
+      "region": "sez",
+      "region_label": "Subesophageal Zone",
+      "side": "right",
+      "categories": [
+        "Taste"
+      ],
+      "role": "interneuron",
+      "description": "Subesophageal-zone interneuron integrating taste input.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "SEZ_IN2",
+      "name": "SEZ interneuron 2",
+      "cell_type": "SEZ-IN2",
+      "region": "sez",
+      "region_label": "Subesophageal Zone",
+      "side": "right",
+      "categories": [
+        "Taste"
+      ],
+      "role": "interneuron",
+      "description": "Taste interneuron linking SEZ circuits toward descending outputs.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "GNG_taste",
+      "name": "GNG taste relay",
+      "cell_type": "GNG-taste",
+      "region": "gng",
+      "region_label": "Gnathal Ganglia",
+      "side": "right",
+      "categories": [
+        "Taste",
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Gnathal relay carrying taste-related signals toward motor-related descending neurons.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "SPS_hub",
+      "name": "SPS convergence hub",
+      "cell_type": "SPS-hub",
+      "region": "sps",
+      "region_label": "Superior Posterior Slope",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Superior posterior slope neuron acting as a structural convergence point across modalities in this exploration graph.",
+      "neurotransmitter": null,
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    },
+    {
+      "id": "PS018",
+      "name": "PS018",
+      "cell_type": "PS018_b",
+      "region": "central_brain",
+      "region_label": "Central Brain",
+      "side": "right",
+      "categories": [
+        "Central"
+      ],
+      "role": "interneuron",
+      "description": "Posterior slope-related neuron listed among DNg13 partners.",
+      "neurotransmitter": "ACh",
+      "source": "MaleCNS v1.0 curated exploration graph (Janelia FlyEM)"
+    }
+  ],
+  "connections": [
+    {
+      "source": "R1",
+      "target": "L1",
+      "synapses": 115,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R1",
+      "target": "L2",
+      "synapses": 102,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R1",
+      "target": "L3",
+      "synapses": 50,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R2",
+      "target": "L1",
+      "synapses": 121,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R2",
+      "target": "L2",
+      "synapses": 104,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R2",
+      "target": "L3",
+      "synapses": 56,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R3",
+      "target": "L1",
+      "synapses": 87,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R3",
+      "target": "L2",
+      "synapses": 91,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R3",
+      "target": "L3",
+      "synapses": 42,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R4",
+      "target": "L1",
+      "synapses": 86,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R4",
+      "target": "L2",
+      "synapses": 85,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R4",
+      "target": "L3",
+      "synapses": 41,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R5",
+      "target": "L1",
+      "synapses": 111,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R5",
+      "target": "L2",
+      "synapses": 88,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R5",
+      "target": "L3",
+      "synapses": 46,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R6",
+      "target": "L1",
+      "synapses": 94,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R6",
+      "target": "L2",
+      "synapses": 81,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "R6",
+      "target": "L3",
+      "synapses": 49,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "L1",
+      "target": "Mi1",
+      "synapses": 120,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "L1",
+      "target": "Tm3",
+      "synapses": 95,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "L2",
+      "target": "Tm3",
+      "synapses": 110,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "L2",
+      "target": "T4",
+      "synapses": 88,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "L3",
+      "target": "TmY3",
+      "synapses": 76,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "Mi1",
+      "target": "Tm3",
+      "synapses": 64,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "Mi1",
+      "target": "T4",
+      "synapses": 52,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "Tm3",
+      "target": "LC10",
+      "synapses": 140,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "Tm3",
+      "target": "LC11",
+      "synapses": 98,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "Tm3",
+      "target": "LoVP92",
+      "synapses": 72,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TmY3",
+      "target": "LC11",
+      "synapses": 81,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "TmY3",
+      "target": "LoVP90b",
+      "synapses": 66,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "T4",
+      "target": "T5",
+      "synapses": 55,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "T5",
+      "target": "LC10",
+      "synapses": 48,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LC10",
+      "target": "AOTU002",
+      "synapses": 156,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LC10",
+      "target": "AOTU015",
+      "synapses": 92,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LC11",
+      "target": "AOTU015",
+      "synapses": 118,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LC11",
+      "target": "AOTU016",
+      "synapses": 87,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LoVP92",
+      "target": "AOTU002",
+      "synapses": 74,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LoVP90b",
+      "target": "AOTU016",
+      "synapses": 61,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU002",
+      "target": "LAL073",
+      "synapses": 47,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU002",
+      "target": "VES200m",
+      "synapses": 38,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU015",
+      "target": "LAL083",
+      "synapses": 42,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU015",
+      "target": "AVLP713m",
+      "synapses": 55,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU016",
+      "target": "LAL073",
+      "synapses": 39,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU016",
+      "target": "PVLP201m",
+      "synapses": 44,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL073",
+      "target": "DNg13",
+      "synapses": 164,
+      "note": "Male CNS Cell Type Explorer lists LAL073 among strong DNg13 inputs",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL083",
+      "target": "DNg13",
+      "synapses": 101,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL015",
+      "target": "DNg13",
+      "synapses": 69,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "VES200m",
+      "target": "DNg13",
+      "synapses": 181,
+      "note": "Top-ranked upstream partner type for DNg13 in Male CNS explorer",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "VES045",
+      "target": "DNg13",
+      "synapses": 107,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "VES005",
+      "target": "DNg13",
+      "synapses": 93,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "CB0244",
+      "target": "DNg13",
+      "synapses": 162,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG532",
+      "target": "DNg13",
+      "synapses": 157,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AVLP713m",
+      "target": "DNg13",
+      "synapses": 63,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AVLP713m",
+      "target": "LAL073",
+      "synapses": 48,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PVLP201m",
+      "target": "VES200m",
+      "synapses": 36,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PVLP201m",
+      "target": "DNg13",
+      "synapses": 20,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU015",
+      "target": "WED_vis",
+      "synapses": 34,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "WED_vis",
+      "target": "VES045",
+      "synapses": 41,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LC10",
+      "target": "AVLP713m",
+      "synapses": 58,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL073",
+      "target": "CB0244",
+      "synapses": 28,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "VES200m",
+      "target": "CB0244",
+      "synapses": 22,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNg13",
+      "target": "IN19A015",
+      "synapses": 80,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNg13",
+      "target": "LegMN_T1",
+      "synapses": 420,
+      "note": "DNg13 shows strong Male CNS output into LegNp(T1)",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNg13",
+      "target": "LegMN_T2",
+      "synapses": 290,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNg13",
+      "target": "LegMN_T3",
+      "synapses": 250,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "IN19A015",
+      "target": "LegMN_T1",
+      "synapses": 95,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "IN19A015",
+      "target": "LegMN_T2",
+      "synapses": 70,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNp56",
+      "target": "LegMN_T1",
+      "synapses": 110,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "DNg97",
+      "target": "LegMN_T2",
+      "synapses": 88,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL083",
+      "target": "DNp56",
+      "synapses": 45,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "VES005",
+      "target": "DNg97",
+      "synapses": 52,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "CB0244",
+      "target": "DNp56",
+      "synapses": 37,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "ORN_DM1",
+      "target": "PN_DM1",
+      "synapses": 210,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "ORN_VA1v",
+      "target": "PN_VA1v",
+      "synapses": 180,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "ORN_DL5",
+      "target": "PN_DL5",
+      "synapses": 160,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_DM1",
+      "target": "KC_ab",
+      "synapses": 95,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_DM1",
+      "target": "LH_ON1",
+      "synapses": 120,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_VA1v",
+      "target": "LH_ON1",
+      "synapses": 110,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_VA1v",
+      "target": "KC_ab",
+      "synapses": 70,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_DL5",
+      "target": "KC_ab",
+      "synapses": 88,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PN_DL5",
+      "target": "LH_ON1",
+      "synapses": 64,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "KC_ab",
+      "target": "MBON35",
+      "synapses": 145,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LH_ON1",
+      "target": "SMP471",
+      "synapses": 76,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LH_ON1",
+      "target": "GNG532",
+      "synapses": 58,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "MBON35",
+      "target": "DNg13",
+      "synapses": 38,
+      "note": "Male CNS explorer lists MBON35 among DNg13 inputs",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "MBON35",
+      "target": "DNp56",
+      "synapses": 42,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SMP471",
+      "target": "DNg13",
+      "synapses": 48,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SMP471",
+      "target": "LAL015",
+      "synapses": 33,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "MBON35",
+      "target": "LAL083",
+      "synapses": 29,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "JO_A",
+      "target": "AMMC_A1",
+      "synapses": 150,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "JO_B",
+      "target": "AMMC_B1",
+      "synapses": 132,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "JO_A",
+      "target": "AMMC_B1",
+      "synapses": 48,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AMMC_A1",
+      "target": "WED_aud",
+      "synapses": 96,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AMMC_B1",
+      "target": "WED_aud",
+      "synapses": 84,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AMMC_B1",
+      "target": "AVLP_aud",
+      "synapses": 71,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "WED_aud",
+      "target": "VES045",
+      "synapses": 54,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "WED_aud",
+      "target": "GNG532",
+      "synapses": 47,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AVLP_aud",
+      "target": "LAL015",
+      "synapses": 40,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AVLP_aud",
+      "target": "DNp56",
+      "synapses": 35,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "WED_aud",
+      "target": "DNg97",
+      "synapses": 31,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GRN_sweet",
+      "target": "SEZ_IN1",
+      "synapses": 175,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GRN_bitter",
+      "target": "SEZ_IN2",
+      "synapses": 160,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GRN_sweet",
+      "target": "SEZ_IN2",
+      "synapses": 42,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SEZ_IN1",
+      "target": "GNG_taste",
+      "synapses": 98,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SEZ_IN2",
+      "target": "GNG_taste",
+      "synapses": 110,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SEZ_IN1",
+      "target": "GNG532",
+      "synapses": 66,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_taste",
+      "target": "GNG532",
+      "synapses": 78,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_taste",
+      "target": "DNg13",
+      "synapses": 28,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_taste",
+      "target": "IN19A015",
+      "synapses": 50,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SEZ_IN2",
+      "target": "DNg97",
+      "synapses": 33,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AOTU002",
+      "target": "SPS_hub",
+      "synapses": 26,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LH_ON1",
+      "target": "SPS_hub",
+      "synapses": 30,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "WED_aud",
+      "target": "SPS_hub",
+      "synapses": 24,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "GNG_taste",
+      "target": "SPS_hub",
+      "synapses": 22,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SPS_hub",
+      "target": "VES200m",
+      "synapses": 58,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SPS_hub",
+      "target": "LAL073",
+      "synapses": 44,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "SPS_hub",
+      "target": "DNg13",
+      "synapses": 19,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "AVLP713m",
+      "target": "PS018",
+      "synapses": 27,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "PS018",
+      "target": "DNg13",
+      "synapses": 55,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    },
+    {
+      "source": "LAL015",
+      "target": "PS018",
+      "synapses": 21,
+      "note": "",
+      "claim_level": "structural_connectivity"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "visual-to-movement",
+      "title": "Visual to Movement",
+      "subtitle": "From photoreceptors toward leg motor circuitry",
+      "source_query": {
+        "kind": "category",
+        "value": "Visual"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Motor"
+      },
+      "preferred_source": "R1",
+      "preferred_destination": "LegMN_T1",
+      "blurb": "Explore how visual information can structurally reach motor-related neurons, inspired by Janelia\u2019s R1\u2013R6 \u2192 DNg13 example."
+    },
+    {
+      "id": "visual-to-dng13",
+      "title": "Visual Input to DNg13",
+      "subtitle": "Janelia reference visual\u2013motor scenario",
+      "source_query": {
+        "kind": "type",
+        "value": "R1-R6"
+      },
+      "destination_query": {
+        "kind": "neuron",
+        "value": "DNg13"
+      },
+      "preferred_source": "R1",
+      "preferred_destination": "DNg13",
+      "blurb": "Follow a structural route from R1\u2013R6 visual neurons to the DNg13 descending neuron highlighted by HHMI Janelia."
+    },
+    {
+      "id": "olfactory-to-descending",
+      "title": "Olfactory to Descending Neuron",
+      "subtitle": "Smell pathways approaching brain-to-VNC outputs",
+      "source_query": {
+        "kind": "category",
+        "value": "Olfactory"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Descending"
+      },
+      "preferred_source": "ORN_DM1",
+      "preferred_destination": "DNg13",
+      "blurb": "Trace how olfactory receptor and projection neurons can reach descending neurons that leave the brain."
+    },
+    {
+      "id": "taste-to-motor",
+      "title": "Taste to Motor Circuit",
+      "subtitle": "Gustatory signals toward motor-related outputs",
+      "source_query": {
+        "kind": "category",
+        "value": "Taste"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Motor"
+      },
+      "preferred_source": "GRN_sweet",
+      "preferred_destination": "LegMN_T1",
+      "blurb": "See how taste neurons in the SEZ/GNG can connect structurally toward motor-related VNC circuitry."
+    },
+    {
+      "id": "auditory-to-motor",
+      "title": "Auditory to Motor",
+      "subtitle": "Sound-related routes into descending and leg circuits",
+      "source_query": {
+        "kind": "category",
+        "value": "Auditory"
+      },
+      "destination_query": {
+        "kind": "category",
+        "value": "Motor"
+      },
+      "preferred_source": "JO_A",
+      "preferred_destination": "LegMN_T2",
+      "blurb": "Explore structural auditory pathways from Johnston\u2019s organ toward motor-related destinations."
+    }
+  ],
+  "categories": [
+    "Visual",
+    "Olfactory",
+    "Auditory",
+    "Taste",
+    "Motor",
+    "Descending",
+    "Sensory",
+    "Central"
+  ]
+}
