@@ -138,7 +138,12 @@ def _select_diverse_paths(candidates: list[tuple[list[str], dict]], max_paths: i
         selected.append((item[0], item[1], label))
 
     add(by_direct[0], "Most direct")
-    add(by_strength[0], "Strongest connectivity")
+    strongest_other = next((c for c in by_strength if tuple(c[0]) not in used), None)
+    if strongest_other:
+        add(strongest_other, "Strongest connectivity")
+    elif tuple(by_strength[0][0]) == tuple(by_direct[0][0]):
+        # Only one unique top path: it is both shortest and strongest
+        selected[0] = (selected[0][0], selected[0][1], "Most direct · strongest")
 
     # Alternatives: maximize Jaccard distance from already selected node sets
     remaining = [c for c in candidates if tuple(c[0]) not in used]

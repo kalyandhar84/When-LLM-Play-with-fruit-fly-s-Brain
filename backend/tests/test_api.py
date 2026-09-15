@@ -57,7 +57,8 @@ def test_resolve_visual_motor_and_find_path():
     assert result.paths[0].hop_count >= 1
     assert result.paths[0].steps
     labels = {p.label for p in result.paths}
-    assert "Most direct" in labels
+    assert any(label.startswith("Most direct") for label in labels)
+    assert any("Strongest" in label or "strongest" in label for label in labels) or len(result.paths) == 1
 
 
 def test_r1_to_dng13_finds_a_path(client):

@@ -73,16 +73,20 @@ def explain_path(node_path: list[str], metrics: dict[str, Any]) -> str:
 def why_this_path(label: str, metrics: dict[str, Any], rank: int, total: int) -> str:
     hops = len(metrics["steps"])
     reasons = [f"Returned as “{label}” (result {rank} of {total})."]
-    if label == "Most direct":
+    if label.startswith("Most direct"):
         reasons.append(
             f"It uses {hops} synaptic step(s), among the fewest intermediate hops connecting the selected endpoints."
+        )
+    if label == "Most direct · strongest":
+        reasons.append(
+            f"The same route is also the strongest in this result set (bottleneck {metrics['min_synapses']}, mean {metrics['mean_synapses']})."
         )
     elif label == "Strongest connectivity":
         reasons.append(
             f"Its bottleneck synapse count is {metrics['min_synapses']} and mean connection strength is {metrics['mean_synapses']}, "
             "favoring structurally stronger edges in this graph."
         )
-    else:
+    elif not label.startswith("Most direct"):
         reasons.append(
             "It provides a distinct alternative route, sharing fewer neurons with the primary results while still linking the same endpoints."
         )
