@@ -104,6 +104,8 @@ frontend/              Vite + vanilla HTML/CSS/JS discovery UI
 scripts/generate_connectome.py
 ```
 
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for data sources, curation notes, algorithms, the API map, and system diagrams.
+
 ## API (same origin `/api`)
 
 | Method | Path | Purpose |

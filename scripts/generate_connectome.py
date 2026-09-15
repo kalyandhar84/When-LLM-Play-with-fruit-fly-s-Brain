@@ -369,7 +369,6 @@ edges += [
     E("SEZ_IN2", "DNg97", 33),
     E("SEZ_IN1", "MN_proboscis", 88),
     E("GNG_taste", "MN_proboscis", 120),
-    E("GRN_sweet", "MN_proboscis", 36),
 ]
 
 neurons += [
@@ -572,9 +571,9 @@ scenarios = [
         "hook": "The fly lands on something sweet.",
         "category": "Taste",
         "preferred_source": "GRN_sweet",
-        "preferred_destination": "MN_proboscis",
+        "preferred_destination": "LegMN_T1",
         "source_query": {"kind": "neuron", "value": "GRN_sweet"},
-        "destination_query": {"kind": "neuron", "value": "MN_proboscis"},
+        "destination_query": {"kind": "neuron", "value": "LegMN_T1"},
         "compare_with": "watch-tv",
         "blurb": "Sugar hits the mouthparts. Can that taste wiring reach feeding or walking motors?",
     },

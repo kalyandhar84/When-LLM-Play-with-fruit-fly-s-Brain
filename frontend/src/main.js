@@ -396,7 +396,7 @@ els.compareTasteTv.addEventListener("click", async () => {
   showBusy("Comparing taste and TV wiring…");
   try {
     state.compare = await api.comparePaths(
-      { source: api.spec("neuron", "GRN_sweet"), destination: api.spec("neuron", "MN_proboscis") },
+      { source: api.spec("neuron", "GRN_sweet"), destination: api.spec("neuron", "LegMN_T1") },
       { source: api.spec("neuron", "R1"), destination: api.spec("neuron", "DNg13") }
     );
     renderCompare();
