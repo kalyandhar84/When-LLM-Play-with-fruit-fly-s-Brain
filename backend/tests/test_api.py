@@ -171,6 +171,82 @@ def test_playful_scenarios(client):
         assert body["scenario"]["mood"]
 
 
+def test_empty_query_falls_back_to_demo_pair():
+    from app.models import PathFindRequest
+
+    result = find_paths(
+        PathFindRequest(
+            source=QuerySpec(kind="neuron", value=""),
+            destination=QuerySpec(kind="neuron", value=""),
+        )
+    )
+    assert result.paths, "Empty scientist fields must still return the demo path"
+    assert result.fallback_used
+    assert result.suggestions or result.paths[0].neuron_ids[0] == "R1"
+
+
+def test_ui_request_bodies_the_form_actually_sends(client):
+    shapes = [
+        {
+            "source": {"kind": "auto", "value": "Visual"},
+            "destination": {"kind": "auto", "value": "Motor"},
+        },
+        {
+            "source": {"kind": "neuron", "value": "Visual"},
+            "destination": {"kind": "neuron", "value": "Motor"},
+        },
+        {
+            "source": {"kind": "neuron", "value": ""},
+            "destination": {"kind": "neuron", "value": ""},
+        },
+        {
+            "source": {"kind": "name", "value": "visual"},
+            "destination": {"kind": "name", "value": "motor neuron"},
+        },
+    ]
+    for body in shapes:
+        response = client.post("/api/paths/find", json=body)
+        assert response.status_code == 200, body
+        assert response.json()["paths"], body
+
+
+def test_ui_typos_still_find_paths():
+    from app.models import PathFindRequest
+
+    cases = [
+        QuerySpec(kind="neuron", value="Visual"),
+        QuerySpec(kind="name", value="visual"),
+        QuerySpec(kind="category", value="Movement"),
+        QuerySpec(kind="auto", value="visual"),
+        QuerySpec(kind="name", value="motor neuron"),
+    ]
+    dest_motor = QuerySpec(kind="neuron", value="Motor")
+    dest_name = QuerySpec(kind="name", value="motor neuron")
+    dest_move = QuerySpec(kind="category", value="Movement")
+
+    visual_motor = find_paths(PathFindRequest(source=cases[0], destination=dest_motor))
+    assert visual_motor.paths, "kind=neuron value=Visual must fuzzy-resolve and find a path"
+
+    name_search = find_paths(PathFindRequest(source=cases[1], destination=dest_name))
+    assert name_search.paths, "name search visual → motor neuron must find a path"
+
+    movement = find_paths(
+        PathFindRequest(
+            source=QuerySpec(kind="category", value="Visual"),
+            destination=dest_move,
+        )
+    )
+    assert movement.paths, "Movement must alias to Motor"
+
+    auto = find_paths(
+        PathFindRequest(
+            source=QuerySpec(kind="auto", value="visual"),
+            destination=QuerySpec(kind="auto", value="motor"),
+        )
+    )
+    assert auto.paths
+
+
 def test_unknown_neuron_404(client):
     assert client.get("/api/neurons/not-a-neuron").status_code == 404
     assert client.get("/api/neurons/not-a-neuron/neighbors").status_code == 404

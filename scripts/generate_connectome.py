@@ -691,6 +691,118 @@ scenarios = [
     },
 ]
 
+SCENE_COPY = {
+    "taste-food": {
+        "brain_story": [
+            "Sweet sensors on the mouthparts (gustatory receptor neurons) sit in the subesophageal zone.",
+            "Taste relays in the SEZ and gnathal ganglia can pass that wiring onward.",
+            "Descending cells such as DNg13 leave the brain toward the ventral nerve cord.",
+            "Leg-related motor neurons in T1 neuropil are structurally downstream — a possible walking/approach output.",
+        ],
+        "possible_actions": [
+            "Extend the proboscis toward sugar — feeding motor cells sit next to this taste map.",
+            "Walk or turn toward the food — T1 leg motor neurons are structurally downstream.",
+            "These are possible uses of the wiring, not proof the fly will eat or walk.",
+        ],
+    },
+    "watch-tv": {
+        "brain_story": [
+            "R1–R6 photoreceptors in the eye start the visual map.",
+            "Signals can hop through lamina, medulla, and lobula cells toward central brain visual areas.",
+            "DNg13 is a descending neuron Janelia highlights on a visual–motor example.",
+            "From the neck connective it can reach leg neuropils in the ventral nerve cord.",
+        ],
+        "possible_actions": [
+            "Visually guided walking or turning — DNg13 outputs strongly toward leg neuropils.",
+            "Orient toward a bright, flickering screen — still only a structural possibility.",
+            "The connectome does not prove the fly watches TV or decides to move.",
+        ],
+    },
+    "zapped": {
+        "brain_story": [
+            "Bristle mechanoreceptors can register a poke, swat, or sudden touch.",
+            "A gnathal relay collects that touch wiring.",
+            "DNp01 is a giant-fiber-class descending neuron used in published startle/escape circuits.",
+            "It can reach front-leg motor neurons in the ventral nerve cord.",
+        ],
+        "possible_actions": [
+            "A startle jump or dash — giant-fiber circuits are classically linked to escape.",
+            "Kick or push off with the legs — T1 motor cells sit downstream on this map.",
+            "A swat might also be seen (visual looming). This scene follows the touch/startle wires only.",
+        ],
+    },
+    "hot": {
+        "brain_story": [
+            "Aristal hot-cell thermoreceptors sense warmth on the antenna.",
+            "The posterior antennal lobe and thermosensory projection neurons carry that map inward.",
+            "Central relays can reach descending neurons toward the ventral nerve cord.",
+            "Mid-leg motor neurons are a structural avoidance-style output on this toy graph.",
+        ],
+        "possible_actions": [
+            "Walk away from a hot spot — avoidance is a common reading of thermosensory-to-motor wiring.",
+            "Stop or turn — motor cells are connected, not commanded.",
+            "Heat sensing is real in flies; this path does not prove the fly felt pain or chose to leave.",
+        ],
+    },
+    "cold": {
+        "brain_story": [
+            "Aristal cold-cell thermoreceptors sense a chill.",
+            "Cool information can hop through the posterior antennal lobe toward central brain cells.",
+            "Descending neurons can carry the map toward the ventral nerve cord.",
+            "Leg motor neurons are structurally available as an avoidance-style output.",
+        ],
+        "possible_actions": [
+            "Walk away from the cold patch — same careful framing as heat: wiring, not a decision.",
+            "Seek a milder spot — only a possible use of motor circuitry on this map.",
+            "The fly is not proven to shiver or suffer; those are everyday words, not lab results.",
+        ],
+    },
+    "smell-yummy": {
+        "brain_story": [
+            "Food-odor receptor neurons (like ORN-DM1) start in the antennal lobe.",
+            "Projection neurons can reach the mushroom body and lateral horn.",
+            "Outputs such as MBON or SMP cells are listed among descending-neuron partners.",
+            "DNg13 is a structural meeting point toward movement-related circuitry.",
+        ],
+        "possible_actions": [
+            "Walk toward a tasty smell — approach is a possible reading, not a guarantee.",
+            "Stay and sample — olfactory wiring can also reach feeding-adjacent areas in the real fly.",
+            "A yummy smell does not prove attraction happened on this recording-free map.",
+        ],
+    },
+    "hear-buzz": {
+        "brain_story": [
+            "Johnston’s organ in the antenna is the fly’s ear — and a vibration sensor.",
+            "AMMC and wedge relays sit on published auditory/mechanosensory routes.",
+            "Descending neurons can carry that map toward the ventral nerve cord.",
+            "T2 leg motor neurons are a structural movement-related ending on this graph.",
+        ],
+        "possible_actions": [
+            "Turn toward (or away from) a buzz — both are possible uses of auditory-to-motor wires.",
+            "Freeze or step — we only know the cells can be linked, not which move happens.",
+            "Hearing a buzz is not proven just because Johnston’s organ is on the path.",
+        ],
+    },
+    "smell-bad": {
+        "brain_story": [
+            "A different olfactory channel (ORN-DL5) still starts in the antennal lobe.",
+            "Projection neurons and higher olfactory cells can reach descending partners.",
+            "DNp56 is another descending neuron on this exploration graph.",
+            "The route is a second smell-to-movement map, not a moral judgment about 'bad'.",
+        ],
+        "possible_actions": [
+            "Turn or walk away — avoidance is a possible reading of a separate odor channel.",
+            "Stop approaching — again, only structurally available motor/descending cells.",
+            "Calling an odor 'bad' is a story label, not a connectome fact.",
+        ],
+    },
+}
+
+for scene in scenarios:
+    extra = SCENE_COPY.get(scene["id"], {})
+    scene["brain_story"] = extra.get("brain_story", [])
+    scene["possible_actions"] = extra.get("possible_actions", [])
+
 meta = {
     "product": "Neural Path Finder",
     "dataset": "HHMI Janelia FlyEM Male CNS Connectome",

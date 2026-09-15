@@ -67,33 +67,67 @@ def build_graph() -> nx.DiGraph:
     return g
 
 
-def resolve_query(spec: QuerySpec) -> list[Neuron]:
-    """Resolve a user query into matching neurons."""
+VALUE_ALIASES = {
+    "movement": "motor",
+    "moving": "motor",
+    "walk": "motor",
+    "walking": "motor",
+    "motion": "motor",
+    "vision": "visual",
+    "sight": "visual",
+    "seeing": "visual",
+    "eye": "visual",
+    "eyes": "visual",
+    "tv": "visual",
+    "smell": "olfactory",
+    "odor": "olfactory",
+    "odour": "olfactory",
+    "hear": "auditory",
+    "hearing": "auditory",
+    "sound": "auditory",
+    "buzz": "auditory",
+    "touch": "mechanosensory",
+    "zap": "mechanosensory",
+    "zapped": "mechanosensory",
+    "shock": "mechanosensory",
+    "poke": "mechanosensory",
+    "heat": "hot",
+    "warm": "hot",
+    "warmth": "hot",
+    "cool": "cold",
+    "chill": "cold",
+    "food": "taste",
+    "sugar": "taste",
+    "sweet": "taste",
+    "eat": "taste",
+}
+
+
+def _normalize_value(value: str) -> str:
+    raw = value.strip().lower()
+    return VALUE_ALIASES.get(raw, raw)
+
+
+def _resolve_kind(kind: str, value: str) -> list[Neuron]:
     neurons = list(neurons_by_id().values())
-    value = spec.value.strip()
-    kind = spec.kind
-    value_l = value.lower()
+    value_l = _normalize_value(value)
+    if not value_l:
+        return []
 
     if kind == "neuron":
-        n = neurons_by_id().get(value)
-        if n:
-            return [n]
-        # fuzzy by id/name
-        return [
-            n
-            for n in neurons
-            if n.id.lower() == value_l or n.name.lower() == value_l
-        ]
+        exact = neurons_by_id().get(value) or neurons_by_id().get(value.strip())
+        if exact:
+            return [exact]
+        lower_ids = {n.id.lower(): n for n in neurons}
+        if value_l in lower_ids:
+            return [lower_ids[value_l]]
+        return [n for n in neurons if n.name.lower() == value_l or n.name.lower() == value.strip().lower()]
 
     if kind == "name":
-        return [
-            n
-            for n in neurons
-            if value_l in n.name.lower() or value_l in n.id.lower()
-        ]
+        return [n for n in neurons if value_l in n.name.lower() or value_l in n.id.lower()]
 
     if kind == "type":
-        return [n for n in neurons if n.cell_type.lower() == value_l or value_l in n.cell_type.lower()]
+        return [n for n in neurons if value_l == n.cell_type.lower() or value_l in n.cell_type.lower()]
 
     if kind == "region":
         return [
@@ -105,9 +139,40 @@ def resolve_query(spec: QuerySpec) -> list[Neuron]:
         ]
 
     if kind == "category":
-        return [n for n in neurons if any(c.lower() == value_l for c in n.categories)]
+        hits = [n for n in neurons if any(c.lower() == value_l for c in n.categories)]
+        if hits:
+            return hits
+        return [n for n in neurons if any(value_l in c.lower() for c in n.categories)]
 
     return []
+
+
+def resolve_query(spec: QuerySpec) -> list[Neuron]:
+    """Resolve a user query; fall back across kinds so 'Visual' still works as a neuron-kind typo."""
+    value = spec.value.strip()
+    if not value:
+        return []
+
+    kind = spec.kind if spec.kind != "auto" else "auto"
+    order = [kind] if kind != "auto" else []
+    order += [k for k in ("category", "neuron", "type", "name", "region") if k not in order]
+
+    for candidate_kind in order:
+        hits = _resolve_kind(candidate_kind, value)
+        if hits:
+            return hits
+
+    return search_neurons(value, limit=16)
+
+
+def suggest_queries(value: str) -> list[str]:
+    hints = ["R1", "DNg13", "Taste Food", "Visual", "Motor", "GRN_sweet", "LegMN_T1"]
+    if not value.strip():
+        return hints
+    hits = search_neurons(value, limit=6)
+    names = [f"{n.id} ({n.name})" for n in hits]
+    extras = [h for h in hints if value.strip().lower() not in h.lower()]
+    return (names + extras)[:8]
 
 
 def search_neurons(q: str, limit: int = 25) -> list[Neuron]:

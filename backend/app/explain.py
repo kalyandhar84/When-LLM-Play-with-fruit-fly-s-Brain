@@ -131,7 +131,22 @@ def playful_story(scenario: dict, path: "NeuralPath | None") -> dict:
         f"The anatomical trip is: {regions}.",
         "This is a map of physical connections, not a video of the fly deciding or feeling something. Wiring is not the same as behavior.",
     ]
-    return {"headline": hook, "beats": beats}
+    brain = list(scenario.get("brain_story") or [])
+    if path and path.region_labels and not brain:
+        brain = [
+            f"This wiring map travels { ' → '.join(path.region_labels) }.",
+            "Sensory cells can connect through intermediate regions toward descending or motor cells.",
+        ]
+    actions = list(scenario.get("possible_actions") or [
+        "Reach movement-related circuitry — walking, turning, or feeding motors may sit downstream.",
+        "That is a possible use of the wires, not a prediction of what the fly will do.",
+    ])
+    return {
+        "headline": hook,
+        "beats": beats,
+        "brain_story": brain,
+        "possible_actions": actions,
+    }
 
 
 def anatomical_journey(path: "NeuralPath") -> str:

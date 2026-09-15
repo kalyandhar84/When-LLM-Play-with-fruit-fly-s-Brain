@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class Neuron(BaseModel):
@@ -30,8 +30,29 @@ class Connection(BaseModel):
 
 
 class QuerySpec(BaseModel):
-    kind: Literal["neuron", "type", "region", "category", "name"]
-    value: str
+    kind: Literal["neuron", "type", "region", "category", "name", "auto"] = "auto"
+    value: str = ""
+
+    @field_validator("kind", mode="before")
+    @classmethod
+    def _normalize_kind(cls, value: object) -> str:
+        text = str(value or "auto").strip().lower()
+        aliases = {
+            "id": "neuron",
+            "cell": "type",
+            "cell_type": "type",
+            "celltype": "type",
+            "neuropil": "region",
+            "area": "region",
+            "class": "category",
+            "modality": "category",
+        }
+        return aliases.get(text, text or "auto")
+
+    @field_validator("value", mode="before")
+    @classmethod
+    def _strip_value(cls, value: object) -> str:
+        return str(value or "").strip()
 
 
 class PathFindRequest(BaseModel):
@@ -76,6 +97,9 @@ class PathFindResponse(BaseModel):
     anatomical_summary: str
     disclaimer: str
     query: PathFindRequest
+    suggestions: list[str] = Field(default_factory=list)
+    fallback_used: bool = False
+    resolve_note: str = ""
 
 
 class CompareRequest(BaseModel):

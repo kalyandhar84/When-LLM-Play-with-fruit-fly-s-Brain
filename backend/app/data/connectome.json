@@ -2431,7 +2431,18 @@
         "value": "LegMN_T1"
       },
       "compare_with": "watch-tv",
-      "blurb": "Sugar hits the mouthparts. Can that taste wiring reach feeding or walking motors?"
+      "blurb": "Sugar hits the mouthparts. Can that taste wiring reach feeding or walking motors?",
+      "brain_story": [
+        "Sweet sensors on the mouthparts (gustatory receptor neurons) sit in the subesophageal zone.",
+        "Taste relays in the SEZ and gnathal ganglia can pass that wiring onward.",
+        "Descending cells such as DNg13 leave the brain toward the ventral nerve cord.",
+        "Leg-related motor neurons in T1 neuropil are structurally downstream \u2014 a possible walking/approach output."
+      ],
+      "possible_actions": [
+        "Extend the proboscis toward sugar \u2014 feeding motor cells sit next to this taste map.",
+        "Walk or turn toward the food \u2014 T1 leg motor neurons are structurally downstream.",
+        "These are possible uses of the wiring, not proof the fly will eat or walk."
+      ]
     },
     {
       "id": "watch-tv",
@@ -2453,7 +2464,18 @@
         "value": "DNg13"
       },
       "compare_with": "taste-food",
-      "blurb": "Light hits the eyes. Follow the official-style R1 \u2192 DNg13 visual\u2013motor map."
+      "blurb": "Light hits the eyes. Follow the official-style R1 \u2192 DNg13 visual\u2013motor map.",
+      "brain_story": [
+        "R1\u2013R6 photoreceptors in the eye start the visual map.",
+        "Signals can hop through lamina, medulla, and lobula cells toward central brain visual areas.",
+        "DNg13 is a descending neuron Janelia highlights on a visual\u2013motor example.",
+        "From the neck connective it can reach leg neuropils in the ventral nerve cord."
+      ],
+      "possible_actions": [
+        "Visually guided walking or turning \u2014 DNg13 outputs strongly toward leg neuropils.",
+        "Orient toward a bright, flickering screen \u2014 still only a structural possibility.",
+        "The connectome does not prove the fly watches TV or decides to move."
+      ]
     },
     {
       "id": "zapped",
@@ -2475,7 +2497,18 @@
         "value": "DNp01"
       },
       "compare_with": "watch-tv",
-      "blurb": "Touch and startle sensors can structurally reach the giant-fiber escape neuron."
+      "blurb": "Touch and startle sensors can structurally reach the giant-fiber escape neuron.",
+      "brain_story": [
+        "Bristle mechanoreceptors can register a poke, swat, or sudden touch.",
+        "A gnathal relay collects that touch wiring.",
+        "DNp01 is a giant-fiber-class descending neuron used in published startle/escape circuits.",
+        "It can reach front-leg motor neurons in the ventral nerve cord."
+      ],
+      "possible_actions": [
+        "A startle jump or dash \u2014 giant-fiber circuits are classically linked to escape.",
+        "Kick or push off with the legs \u2014 T1 motor cells sit downstream on this map.",
+        "A swat might also be seen (visual looming). This scene follows the touch/startle wires only."
+      ]
     },
     {
       "id": "hot",
@@ -2497,7 +2530,18 @@
         "value": "LegMN_T2"
       },
       "compare_with": "cold",
-      "blurb": "Aristal hot cells can connect, hop by hop, toward leg motor circuitry."
+      "blurb": "Aristal hot cells can connect, hop by hop, toward leg motor circuitry.",
+      "brain_story": [
+        "Aristal hot-cell thermoreceptors sense warmth on the antenna.",
+        "The posterior antennal lobe and thermosensory projection neurons carry that map inward.",
+        "Central relays can reach descending neurons toward the ventral nerve cord.",
+        "Mid-leg motor neurons are a structural avoidance-style output on this toy graph."
+      ],
+      "possible_actions": [
+        "Walk away from a hot spot \u2014 avoidance is a common reading of thermosensory-to-motor wiring.",
+        "Stop or turn \u2014 motor cells are connected, not commanded.",
+        "Heat sensing is real in flies; this path does not prove the fly felt pain or chose to leave."
+      ]
     },
     {
       "id": "cold",
@@ -2519,7 +2563,18 @@
         "value": "LegMN_T2"
       },
       "compare_with": "hot",
-      "blurb": "Cool-sensing cells in the arista have a structural path toward movement-related neurons."
+      "blurb": "Cool-sensing cells in the arista have a structural path toward movement-related neurons.",
+      "brain_story": [
+        "Aristal cold-cell thermoreceptors sense a chill.",
+        "Cool information can hop through the posterior antennal lobe toward central brain cells.",
+        "Descending neurons can carry the map toward the ventral nerve cord.",
+        "Leg motor neurons are structurally available as an avoidance-style output."
+      ],
+      "possible_actions": [
+        "Walk away from the cold patch \u2014 same careful framing as heat: wiring, not a decision.",
+        "Seek a milder spot \u2014 only a possible use of motor circuitry on this map.",
+        "The fly is not proven to shiver or suffer; those are everyday words, not lab results."
+      ]
     },
     {
       "id": "smell-yummy",
@@ -2541,7 +2596,18 @@
         "value": "DNg13"
       },
       "compare_with": "smell-bad",
-      "blurb": "Food-odor receptor neurons can structurally reach descending motor-related cells."
+      "blurb": "Food-odor receptor neurons can structurally reach descending motor-related cells.",
+      "brain_story": [
+        "Food-odor receptor neurons (like ORN-DM1) start in the antennal lobe.",
+        "Projection neurons can reach the mushroom body and lateral horn.",
+        "Outputs such as MBON or SMP cells are listed among descending-neuron partners.",
+        "DNg13 is a structural meeting point toward movement-related circuitry."
+      ],
+      "possible_actions": [
+        "Walk toward a tasty smell \u2014 approach is a possible reading, not a guarantee.",
+        "Stay and sample \u2014 olfactory wiring can also reach feeding-adjacent areas in the real fly.",
+        "A yummy smell does not prove attraction happened on this recording-free map."
+      ]
     },
     {
       "id": "hear-buzz",
@@ -2563,7 +2629,18 @@
         "value": "LegMN_T2"
       },
       "compare_with": "zapped",
-      "blurb": "Johnston\u2019s organ is a real fly ear \u2014 and a vibration sensor \u2014 with paths toward the legs."
+      "blurb": "Johnston\u2019s organ is a real fly ear \u2014 and a vibration sensor \u2014 with paths toward the legs.",
+      "brain_story": [
+        "Johnston\u2019s organ in the antenna is the fly\u2019s ear \u2014 and a vibration sensor.",
+        "AMMC and wedge relays sit on published auditory/mechanosensory routes.",
+        "Descending neurons can carry that map toward the ventral nerve cord.",
+        "T2 leg motor neurons are a structural movement-related ending on this graph."
+      ],
+      "possible_actions": [
+        "Turn toward (or away from) a buzz \u2014 both are possible uses of auditory-to-motor wires.",
+        "Freeze or step \u2014 we only know the cells can be linked, not which move happens.",
+        "Hearing a buzz is not proven just because Johnston\u2019s organ is on the path."
+      ]
     },
     {
       "id": "smell-bad",
@@ -2585,7 +2662,18 @@
         "value": "DNp56"
       },
       "compare_with": "smell-yummy",
-      "blurb": "A different olfactory channel can still reach descending neurons \u2014 a separate structural route."
+      "blurb": "A different olfactory channel can still reach descending neurons \u2014 a separate structural route.",
+      "brain_story": [
+        "A different olfactory channel (ORN-DL5) still starts in the antennal lobe.",
+        "Projection neurons and higher olfactory cells can reach descending partners.",
+        "DNp56 is another descending neuron on this exploration graph.",
+        "The route is a second smell-to-movement map, not a moral judgment about 'bad'."
+      ],
+      "possible_actions": [
+        "Turn or walk away \u2014 avoidance is a possible reading of a separate odor channel.",
+        "Stop approaching \u2014 again, only structurally available motor/descending cells.",
+        "Calling an odor 'bad' is a story label, not a connectome fact."
+      ]
     }
   ],
   "categories": [

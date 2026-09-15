@@ -1,16 +1,24 @@
 import * as api from "./api.js";
 
+const HARDCODED_SCENES = [
+  { id: "taste-food", title: "Taste Food", emoji: "🍯", mood: "food", pose: "eating", play_label: "Tap to taste", hook: "The fly lands on something sweet.", blurb: "Sugar hits the mouthparts.", preferred_source: "GRN_sweet", preferred_destination: "LegMN_T1" },
+  { id: "watch-tv", title: "Watch TV", emoji: "📺", mood: "tv", pose: "watching", play_label: "Tap to watch", hook: "The fly stares at a glowing screen.", blurb: "Light hits the eyes.", preferred_source: "R1", preferred_destination: "DNg13" },
+  { id: "zapped", title: "Zapped By Human", emoji: "⚡", mood: "zap", pose: "jumping", play_label: "Tap to zap", hook: "A human swats or pokes the fly.", blurb: "Touch can reach the giant fiber.", preferred_source: "BR_mech", preferred_destination: "DNp01" },
+  { id: "hot", title: "Hot Sensation", emoji: "🔥", mood: "hot", pose: "hot", play_label: "Tap the heat", hook: "It gets too hot.", blurb: "Aristal hot cells toward the legs.", preferred_source: "HC_arista", preferred_destination: "LegMN_T2" },
+  { id: "cold", title: "Cold Sensation", emoji: "❄️", mood: "cold", pose: "shivering", play_label: "Tap the chill", hook: "A chill hits the antenna.", blurb: "Aristal cold cells toward the legs.", preferred_source: "CC_arista", preferred_destination: "LegMN_T2" },
+  { id: "smell-yummy", title: "Smell Something Yummy", emoji: "🍓", mood: "yummy", pose: "sniffing", play_label: "Tap to sniff", hook: "A tasty smell drifts by.", blurb: "Food odor toward DNg13.", preferred_source: "ORN_DM1", preferred_destination: "DNg13" },
+  { id: "hear-buzz", title: "Hear a Buzz", emoji: "🎵", mood: "buzz", pose: "listening", play_label: "Tap to listen", hook: "The antennae pick up a buzz.", blurb: "Johnston’s organ toward the legs.", preferred_source: "JO_A", preferred_destination: "LegMN_T2" },
+  { id: "smell-bad", title: "Smell Something Bad", emoji: "🤢", mood: "stinky", pose: "recoil", play_label: "Tap the stink", hook: "An unpleasant odor hits.", blurb: "A second smell channel toward DNp56.", preferred_source: "ORN_DL5", preferred_destination: "DNp56" },
+];
+
 const els = {
   board: document.getElementById("scenario-board"),
   results: document.getElementById("results"),
   exploreResults: document.getElementById("explore-results"),
   compareResults: document.getElementById("compare-results"),
-  storyCard: document.getElementById("story-card"),
   status: document.getElementById("status"),
   mascotLine: document.getElementById("mascot-line"),
   findForm: document.getElementById("find-form"),
-  scientistToggle: document.getElementById("scientist-toggle"),
-  scientistPanel: document.getElementById("scientist-panel"),
   compareTasteTv: document.getElementById("compare-taste-tv"),
   demoBtn: document.getElementById("demo-btn"),
   sourceKind: document.getElementById("source-kind"),
@@ -19,12 +27,10 @@ const els = {
   destValue: document.getElementById("dest-value"),
   sourceSuggest: document.getElementById("source-suggest"),
   destSuggest: document.getElementById("dest-suggest"),
+  brainCard: document.getElementById("brain-card"),
+  actionCard: document.getElementById("action-card"),
+  scientistHint: document.getElementById("scientist-hint"),
 };
-
-const CATEGORIES = [
-  "Visual", "Olfactory", "Auditory", "Taste", "Motor", "Descending",
-  "Temperature", "Hot", "Cold", "Mechanosensory",
-];
 
 const state = {
   scenarios: [],
@@ -35,6 +41,7 @@ const state = {
   selectedNeuron: null,
   branch: null,
   story: null,
+  scenario: null,
 };
 
 function escapeHtml(value) {
@@ -45,14 +52,23 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function setTab(tab) {
+  document.body.dataset.tab = tab;
+  document.querySelectorAll(".exhibit-tabs [role='tab']").forEach((btn) => {
+    btn.setAttribute("aria-selected", String(btn.dataset.tab === tab));
+  });
+  ["play", "brain", "action", "scientist"].forEach((name) => {
+    const panel = document.getElementById(`panel-${name}`);
+    if (panel) panel.hidden = name !== tab;
+  });
+}
+
 function setMood(mood, pose, line) {
   document.body.dataset.mood = mood || "idle";
   document.body.dataset.pose = pose || "idle";
   document.body.classList.toggle("flash", mood === "zap");
   if (line) els.mascotLine.textContent = line;
-  if (mood === "zap") {
-    window.setTimeout(() => document.body.classList.remove("flash"), 600);
-  }
+  if (mood === "zap") window.setTimeout(() => document.body.classList.remove("flash"), 600);
 }
 
 function showBusy(message) {
@@ -60,11 +76,6 @@ function showBusy(message) {
   els.compareResults.hidden = true;
   els.exploreResults.hidden = false;
   els.status.textContent = message;
-}
-
-function showError(error) {
-  els.results.hidden = false;
-  els.status.textContent = error.message || String(error);
 }
 
 function renderBoard() {
@@ -84,41 +95,57 @@ function renderBoard() {
   });
 }
 
+function fillSideTabs(scenario, story, path) {
+  const brain = story?.brain_story?.length ? story.brain_story : [
+    path ? `This map travels ${path.region_labels.join(" → ")}.` : "Play a scene to fill this tab.",
+  ];
+  const actions = story?.possible_actions?.length ? story.possible_actions : [
+    "Movement-related cells sit downstream on some maps.",
+    "That could support walking, turning, feeding, or startle — it does not prove the fly will do those things.",
+  ];
+  els.brainCard.innerHTML = `
+    <h3>${escapeHtml(scenario?.title || "What happens in the brain")}</h3>
+    <ol>${brain.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ol>
+  `;
+  els.actionCard.innerHTML = `
+    <h3>What the fly might do</h3>
+    <p>These are possible uses of structurally connected motor or descending cells — not predictions.</p>
+    <ol>${actions.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ol>
+  `;
+}
+
 async function playScenario(id) {
-  const scenario = state.scenarios.find((s) => s.id === id);
+  const scenario = state.scenarios.find((s) => s.id === id) || HARDCODED_SCENES.find((s) => s.id === id);
   if (!scenario) return;
   state.activeId = id;
+  state.scenario = scenario;
   renderBoard();
   setMood(scenario.mood, scenario.pose, scenario.hook);
+  setTab("play");
   showBusy("Following the wires…");
-  els.storyCard.innerHTML = `<p>${escapeHtml(scenario.hook)}</p>`;
   try {
-    const packed = await api.runScenario(id);
+    let packed;
+    try {
+      packed = await api.runScenario(id);
+    } catch {
+      const result = await api.findPaths(
+        api.spec("neuron", scenario.preferred_source),
+        api.spec("neuron", scenario.preferred_destination)
+      );
+      packed = { scenario, result, story: { headline: scenario.hook, beats: [scenario.hook], brain_story: [], possible_actions: [] } };
+    }
     state.result = packed.result;
     state.story = packed.story;
+    state.scenario = packed.scenario || scenario;
     state.selectedPath = 0;
     state.selectedNeuron = packed.result.paths[0]?.neuron_ids[0] || null;
     await refreshBranch();
-    renderStory();
+    fillSideTabs(state.scenario, state.story, packed.result.paths[0]);
     renderExplore();
     els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {
-    showError(error);
+    els.status.textContent = error.message || String(error);
   }
-}
-
-function renderStory() {
-  if (!state.story) {
-    els.storyCard.innerHTML = "";
-    return;
-  }
-  const beats = state.story.beats
-    .map((beat, i) => `<li style="animation-delay:${i * 90}ms">${escapeHtml(beat)}</li>`)
-    .join("");
-  els.storyCard.innerHTML = `
-    <h3>${escapeHtml(state.story.headline)}</h3>
-    <ol>${beats}</ol>
-  `;
 }
 
 async function refreshBranch() {
@@ -140,12 +167,13 @@ function renderExplore() {
   els.exploreResults.hidden = false;
   els.compareResults.hidden = true;
   if (!result.paths.length) {
-    els.status.textContent = "No path in this toy map.";
-    els.exploreResults.innerHTML = `<p>${escapeHtml(result.anatomical_summary)}</p>`;
+    const hint = (result.suggestions || []).join(", ");
+    els.status.textContent = "We could not wire that pair — try a suggestion.";
+    els.exploreResults.innerHTML = `<p>${escapeHtml(result.anatomical_summary)}</p>${hint ? `<p class="hint">Did you mean ${escapeHtml(hint)}?</p>` : ""}`;
     return;
   }
   const path = result.paths[state.selectedPath] || result.paths[0];
-  els.status.textContent = `${result.paths.length} routes · ${path.hop_count} hops · still just a wiring map`;
+  els.status.textContent = `${result.paths.length} routes · ${path.hop_count} hops · wiring map only`;
 
   const tabs = result.paths
     .map(
@@ -169,20 +197,8 @@ function renderExplore() {
       (row) => `
       <div class="bar-row">
         <label><span>${escapeHtml(row.from_name)} → ${escapeHtml(row.to_name)}</span><span>${row.synapses} synapses</span></label>
-        <div class="bar ${escapeHtml(row.band)}"><i style="--w:${Math.max(10, row.relative * 100)}%"></i></div>
+        <div class="bar"><i style="--w:${Math.max(10, row.relative * 100)}%"></i></div>
       </div>`
-    )
-    .join("");
-
-  const anatomy = path.region_labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("");
-  const hubs = (result.hubs || [])
-    .map(
-      (h) => `
-      <article class="hub-item">
-        <strong>${escapeHtml(h.neuron.name)}</strong>
-        <div class="meta">${escapeHtml(h.neuron.cell_type)} · ${h.degree} neighbors</div>
-        <p>${escapeHtml(h.interpretation)}</p>
-      </article>`
     )
     .join("");
 
@@ -195,36 +211,19 @@ function renderExplore() {
       <div class="metric"><span>Hops</span><strong>${path.hop_count}</strong></div>
       <div class="metric"><span>Synapse total</span><strong>${path.total_synapses}</strong></div>
     </div>
-    <div class="panel">
-      <h4>In plain words</h4>
-      <p>${escapeHtml(path.explanation)}</p>
-    </div>
+    <div class="panel"><h4>In plain words</h4><p>${escapeHtml(path.explanation)}</p></div>
     <div class="grid-2" style="margin-top:12px">
-      <div class="panel">
-        <h4>Why this path?</h4>
-        <p>${escapeHtml(path.why_this_path)}</p>
-      </div>
-      <div class="panel">
-        <h4>How strong are the links?</h4>
-        ${strength}
-      </div>
+      <div class="panel"><h4>Why this path?</h4><p>${escapeHtml(path.why_this_path)}</p></div>
+      <div class="panel"><h4>How strong are the links?</h4>${strength}</div>
     </div>
     <div class="panel" style="margin-top:12px">
       <h4>Neighborhoods along the way</h4>
       <p>${escapeHtml(result.anatomical_summary)}</p>
-      <div class="stepper">${anatomy}</div>
+      <div class="stepper">${path.region_labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}</div>
     </div>
     <div class="grid-2" style="margin-top:12px">
-      <div class="panel">
-        <h4>Tap a cell to see branches</h4>
-        <p>A neuron is a crossroads, not a one-way street.</p>
-        ${renderBranch()}
-      </div>
-      <div class="panel">
-        <h4>Busy crossroads (not “important” in real life)</h4>
-        <p>These ranks are only inside this tiny map.</p>
-        ${hubs}
-      </div>
+      <div class="panel"><h4>Tap a cell to see branches</h4>${renderBranch()}</div>
+      <div class="panel"><h4>Busy crossroads (only on this tiny map)</h4>${(result.hubs || []).map((h) => `<article class="hub-item"><strong>${escapeHtml(h.neuron.name)}</strong><p>${escapeHtml(h.interpretation)}</p></article>`).join("")}</div>
     </div>
   `;
 
@@ -261,26 +260,10 @@ function edgeLabel(synapses, index) {
 
 function renderBranch() {
   const data = state.branch;
-  if (!data) return `<p>Tap a glowing cell on the path.</p>`;
+  if (!data) return `<p>Tap a cell on the path.</p>`;
   const col = (rows, title) => `
-    <div>
-      <strong>${title}</strong>
-      ${rows
-        .map(
-          (row) => `
-        <div class="neighbor" data-neuron="${escapeHtml(row.neuron.id)}">
-          <span>${escapeHtml(row.neuron.name)}</span>
-          <span>${row.synapses}</span>
-        </div>`
-        )
-        .join("")}
-    </div>`;
-  return `
-    <p><strong>${escapeHtml(data.neuron.name)}</strong> — ${escapeHtml(data.neuron.description || "")}</p>
-    <div class="branch-cols">
-      ${col(data.upstream, "Before")}
-      ${col(data.downstream, "After")}
-    </div>`;
+    <div><strong>${title}</strong>${rows.map((row) => `<div class="neighbor" data-neuron="${escapeHtml(row.neuron.id)}"><span>${escapeHtml(row.neuron.name)}</span><span>${row.synapses}</span></div>`).join("")}</div>`;
+  return `<p><strong>${escapeHtml(data.neuron.name)}</strong></p><div class="branch-cols">${col(data.upstream, "Before")}${col(data.downstream, "After")}</div>`;
 }
 
 function renderCompare() {
@@ -290,28 +273,16 @@ function renderCompare() {
   els.exploreResults.hidden = true;
   els.compareResults.hidden = false;
   els.status.textContent = "Do the two scenes share any cells?";
-  setMood("idle", "idle", "Two scenes, one map. Shared cells are meeting points in the wiring — not proof they happen together.");
+  setMood("idle", "idle", "Shared cells are meeting points in the wiring — not proof they happen together.");
   const side = (label, result) => {
     const path = result.paths?.[0];
     if (!path) return `<div class="panel"><h4>${label}</h4><p>No path.</p></div>`;
-    return `
-      <div class="panel">
-        <h4>${label}</h4>
-        <p>${path.hop_count} hops · ${escapeHtml(path.region_labels.join(" → "))}</p>
-        <p>${escapeHtml(path.explanation)}</p>
-      </div>`;
+    return `<div class="panel"><h4>${label}</h4><p>${path.hop_count} hops · ${escapeHtml(path.region_labels.join(" → "))}</p><p>${escapeHtml(path.explanation)}</p></div>`;
   };
-  const shared = (cmp.shared_neuron_ids || []).join(", ") || "none on the top routes";
-  els.storyCard.innerHTML = `
-    <h3>Taste food vs watch TV</h3>
-    <p>${escapeHtml(cmp.comparison_explanation)}</p>
-    <p>Shared cells: ${escapeHtml(shared)}.</p>
-  `;
   els.compareResults.innerHTML = `
-    <div class="compare-split">
-      ${side("Taste food", cmp.path_a)}
-      ${side("Watch TV", cmp.path_b)}
-    </div>
+    <p>${escapeHtml(cmp.comparison_explanation)}</p>
+    <p>Shared cells: ${escapeHtml((cmp.shared_neuron_ids || []).join(", ") || "none on the top routes")}.</p>
+    <div class="compare-split">${side("Taste food", cmp.path_a)}${side("Watch TV", cmp.path_b)}</div>
   `;
 }
 
@@ -321,11 +292,6 @@ function bindSearch(input, suggestBox, kindSelect) {
     clearTimeout(timer);
     timer = window.setTimeout(async () => {
       const q = input.value.trim();
-      if (kindSelect.value === "category") {
-        const hits = CATEGORIES.filter((c) => c.toLowerCase().includes(q.toLowerCase() || ""));
-        renderSuggest(suggestBox, hits.map((c) => ({ id: c, name: c, cell_type: "category" })), input, kindSelect);
-        return;
-      }
       if (q.length < 1) {
         suggestBox.hidden = true;
         return;
@@ -349,50 +315,57 @@ function renderSuggest(box, hits, input, kindSelect) {
   }
   box.hidden = false;
   box.innerHTML = hits
-    .map(
-      (n) =>
-        `<button type="button" data-id="${escapeHtml(n.id)}"><strong>${escapeHtml(n.id)}</strong> · ${escapeHtml(n.name)}</button>`
-    )
+    .map((n) => `<button type="button" data-id="${escapeHtml(n.id)}"><strong>${escapeHtml(n.id)}</strong> · ${escapeHtml(n.name)}</button>`)
     .join("");
   box.querySelectorAll("button").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (kindSelect.value !== "category") kindSelect.value = "neuron";
+      kindSelect.value = "neuron";
       input.value = btn.dataset.id;
       box.hidden = true;
     });
   });
 }
 
+document.querySelectorAll(".exhibit-tabs [role='tab']").forEach((btn) => {
+  btn.addEventListener("click", () => setTab(btn.dataset.tab));
+});
+
 els.findForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  state.activeId = null;
-  renderBoard();
-  setMood("idle", "idle", "Scientist mode is tracing a custom path.");
+  setTab("play");
   showBusy("Tracing…");
   try {
-    state.result = await api.findPaths(
+    const result = await api.findPaths(
       api.spec(els.sourceKind.value, els.sourceValue.value),
       api.spec(els.destKind.value, els.destValue.value)
     );
+    state.result = result;
     state.story = {
       headline: "Custom search",
-      beats: ["You picked the start and end.", "Same rules: this is a wiring map, not a behavior recording."],
+      beats: [result.resolve_note || "You picked the start and end."],
+      brain_story: result.paths[0] ? [`This custom map travels ${result.paths[0].region_labels.join(" → ")}.`] : [],
+      possible_actions: ["Custom searches still only show wiring, not what the fly will do."],
     };
     state.selectedPath = 0;
-    state.selectedNeuron = state.result.paths[0]?.neuron_ids[0] || null;
+    state.selectedNeuron = result.paths[0]?.neuron_ids[0] || null;
+    els.scientistHint.textContent = result.fallback_used
+      ? result.resolve_note
+      : result.suggestions?.length
+        ? `Did you mean ${result.suggestions.join(", ")}?`
+        : "";
     await refreshBranch();
-    renderStory();
+    fillSideTabs({ title: "Scientist search" }, state.story, result.paths[0]);
     renderExplore();
   } catch (error) {
-    showError(error);
+    els.status.textContent = error.message || String(error);
+    els.scientistHint.textContent = "Try Visual → Motor, or R1 → DNg13, or a Play scene.";
   }
 });
 
 els.demoBtn.addEventListener("click", () => playScenario("watch-tv"));
 
 els.compareTasteTv.addEventListener("click", async () => {
-  state.activeId = null;
-  renderBoard();
+  setTab("play");
   showBusy("Comparing taste and TV wiring…");
   try {
     state.compare = await api.comparePaths(
@@ -402,15 +375,8 @@ els.compareTasteTv.addEventListener("click", async () => {
     renderCompare();
     els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {
-    showError(error);
+    els.status.textContent = error.message || String(error);
   }
-});
-
-els.scientistToggle.addEventListener("click", () => {
-  const open = !els.scientistPanel.open;
-  els.scientistPanel.open = open;
-  els.scientistToggle.setAttribute("aria-expanded", String(open));
-  if (open) els.scientistPanel.scrollIntoView({ behavior: "smooth" });
 });
 
 bindSearch(els.sourceValue, els.sourceSuggest, els.sourceKind);
@@ -419,8 +385,10 @@ bindSearch(els.destValue, els.destSuggest, els.destKind);
 (async function boot() {
   try {
     state.scenarios = await api.scenarios();
-    renderBoard();
-  } catch (error) {
-    showError(error);
+    if (!state.scenarios?.length) state.scenarios = HARDCODED_SCENES;
+  } catch {
+    state.scenarios = HARDCODED_SCENES;
   }
+  renderBoard();
+  setTab("play");
 })();

@@ -8,7 +8,7 @@ from typing import Iterable
 import networkx as nx
 
 from .explain import anatomical_journey, explain_path, why_this_path
-from .graph import build_graph, neurons_by_id, resolve_query, structural_hubs
+from .graph import build_graph, neurons_by_id, resolve_query, structural_hubs, suggest_queries
 from .models import NeuralPath, Neuron, PathFindRequest, PathFindResponse, PathStep, QuerySpec
 
 
@@ -166,8 +166,20 @@ def _select_diverse_paths(candidates: list[tuple[list[str], dict]], max_paths: i
     return selected[:max_paths]
 
 
+DEMO_PAIRS = (
+    ("R1", "DNg13"),
+    ("R1", "LegMN_T1"),
+    ("GRN_sweet", "LegMN_T1"),
+    ("BR_mech", "DNp01"),
+    ("HC_arista", "LegMN_T2"),
+    ("CC_arista", "LegMN_T2"),
+    ("JO_A", "LegMN_T2"),
+    ("ORN_DM1", "DNg13"),
+)
+
+
 def _prefer_endpoints(neurons: list[Neuron], *, as_source: bool) -> list[Neuron]:
-    """For category queries, start at sensory cells and end at motor/descending cells."""
+    """For category-like queries, start at sensory cells and end at motor/descending cells."""
     if as_source:
         sensory = [n for n in neurons if n.role == "sensory"]
         return sensory or neurons
@@ -178,34 +190,97 @@ def _prefer_endpoints(neurons: list[Neuron], *, as_source: bool) -> list[Neuron]
     return terminals or neurons
 
 
+def _connected_ids(
+    g: nx.DiGraph,
+    source_ids: list[str],
+    dest_ids: list[str],
+    max_depth: int,
+) -> list[tuple[str, str]]:
+    """Return source/dest pairs that actually have a directed path, shortest first."""
+    pairs: list[tuple[int, str, str]] = []
+    dest_set = set(dest_ids)
+    for sid in source_ids:
+        if sid not in g:
+            continue
+        lengths = nx.single_source_shortest_path_length(g, sid, cutoff=max_depth)
+        for tid in dest_set:
+            if tid != sid and tid in lengths:
+                pairs.append((lengths[tid], sid, tid))
+    pairs.sort()
+    seen: set[tuple[str, str]] = set()
+    ordered: list[tuple[str, str]] = []
+    for _, sid, tid in pairs:
+        key = (sid, tid)
+        if key in seen:
+            continue
+        seen.add(key)
+        ordered.append(key)
+    return ordered
+
+
 def find_paths(req: PathFindRequest) -> PathFindResponse:
     g = build_graph()
+    notes: list[str] = []
+    fallback_used = False
+
     sources = resolve_query(req.source)
     destinations = resolve_query(req.destination)
 
-    if req.source.kind == "category":
-        sources = _prefer_endpoints(sources, as_source=True)
-    if req.destination.kind == "category":
-        destinations = _prefer_endpoints(destinations, as_source=False)
+    looks_like_category = req.source.kind in {"category", "auto", "name"}
+    if looks_like_category or (sources and all(n.role == "sensory" or "Sensory" in n.categories for n in sources[:3])):
+        sources = _prefer_endpoints(sources, as_source=True) or sources
+    if req.destination.kind in {"category", "auto", "name"} or any(
+        "Motor" in n.categories or n.role in {"motor", "descending"} for n in destinations
+    ):
+        destinations = _prefer_endpoints(destinations, as_source=False) or destinations
 
-    # Cap pair-wise enumeration so category-wide searches stay interactive
-    sources = sources[:8]
-    destinations = destinations[:8]
+    source_ids = [n.id for n in sources]
+    dest_ids = [n.id for n in destinations]
+    connected = _connected_ids(g, source_ids, dest_ids, req.max_depth)
 
-    if not sources or not destinations:
+    if not connected:
+        # Broaden to every resolved neuron, not just the preferred-role slice
+        source_ids = [n.id for n in resolve_query(req.source)]
+        dest_ids = [n.id for n in resolve_query(req.destination)]
+        connected = _connected_ids(g, source_ids, dest_ids, req.max_depth)
+
+    if not connected:
+        catalog = neurons_by_id()
+        for sid, tid in DEMO_PAIRS:
+            if sid in catalog and tid in catalog and sid in g and tid in g:
+                if nx.has_path(g, sid, tid):
+                    connected = [(sid, tid)]
+                    sources = [catalog[sid]]
+                    destinations = [catalog[tid]]
+                    fallback_used = True
+                    notes.append(
+                        f"Used the demo pair {sid} → {tid} because “{req.source.value or '…'}” "
+                        f"to “{req.destination.value or '…'}” did not resolve to a linked pair."
+                    )
+                    break
+
+    if not connected:
+        suggestions = suggest_queries(req.source.value or req.destination.value)
         return PathFindResponse(
             source_resolved=sources,
             destination_resolved=destinations,
             paths=[],
             hubs=[],
-            anatomical_summary="No matching source or destination neurons were found for this query.",
+            anatomical_summary=(
+                "No matching source or destination neurons were found for this query. "
+                f"Did you mean {', '.join(suggestions)}?"
+            ),
             disclaimer=get_disclaimer(),
             query=req,
+            suggestions=suggestions,
+            fallback_used=False,
+            resolve_note=" ".join(notes),
         )
 
-    source_ids = [n.id for n in sources]
-    dest_ids = [n.id for n in destinations]
-    raw_paths = _enumerate_simple_paths(g, source_ids, dest_ids, req.max_depth)
+    # Enumerate from a few connected pairs so we do not miss reachable motors
+    pair_sources = list(dict.fromkeys(s for s, _ in connected[:8]))
+    pair_dests = list(dict.fromkeys(t for _, t in connected[:8]))
+    raw_paths = _enumerate_simple_paths(g, pair_sources, pair_dests, req.max_depth)
 
     measured: list[tuple[list[str], dict]] = []
     for path in raw_paths:
@@ -241,16 +316,42 @@ def find_paths(req: PathFindRequest) -> PathFindResponse:
         )
 
     hubs = structural_hubs(limit=6, focus_ids=all_nodes)
-    summary = anatomical_journey(neural_paths[0]) if neural_paths else "No structural path found in the exploration graph."
+    if neural_paths:
+        summary = anatomical_journey(neural_paths[0])
+    else:
+        suggestions = suggest_queries(req.source.value or req.destination.value)
+        summary = (
+            "No structural path found in the exploration graph. "
+            f"Did you mean {', '.join(suggestions)}?"
+        )
+        return PathFindResponse(
+            source_resolved=sources,
+            destination_resolved=destinations,
+            paths=[],
+            hubs=hubs,
+            anatomical_summary=summary,
+            disclaimer=get_disclaimer(),
+            query=req,
+            suggestions=suggestions,
+            fallback_used=fallback_used,
+            resolve_note=" ".join(notes),
+        )
+
+    catalog = neurons_by_id()
+    resolved_sources = [catalog[i] for i in pair_sources if i in catalog]
+    resolved_dests = [catalog[i] for i in pair_dests if i in catalog]
 
     return PathFindResponse(
-        source_resolved=sources,
-        destination_resolved=destinations,
+        source_resolved=resolved_sources or sources,
+        destination_resolved=resolved_dests or destinations,
         paths=neural_paths,
         hubs=hubs,
-        anatomical_summary=summary,
+        anatomical_summary=summary + ((" " + " ".join(notes)) if notes else ""),
         disclaimer=get_disclaimer(),
         query=req,
+        suggestions=[],
+        fallback_used=fallback_used,
+        resolve_note=" ".join(notes),
     )
 
 
