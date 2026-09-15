@@ -1,0 +1,16 @@
+fly/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.DS_Store
+node_modules/
+frontend/dist/
+.pytest_cache/
+*.log
+.coverage
+htmlcov/
+.playwright-mcp/
+npf-ui-verify.png
