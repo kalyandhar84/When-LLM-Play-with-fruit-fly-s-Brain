@@ -448,6 +448,135 @@ Synapse counts are not firing rates. A 5-hop path is not a measured delay. A hub
 
 ## 4. Diagrams
 
+These diagrams match the code in `backend/app/main.py`, `frontend/src/main.js`, and `frontend/src/api.js`. There is no separate graph database, no Janelia client at runtime, and no WebSocket layer.
+
+### 4.0 Runtime: browser SPA → FastAPI → connectome JSON
+
+Uvicorn listens on `0.0.0.0:8000` (`backend/run.py`). `FRONTEND_DIST` is `frontend/dist` relative to the repo root. If `frontend/dist/assets` exists, FastAPI mounts it at `/assets`. `GET /` returns `dist/index.html` via `FileResponse`. Other non-API paths fall through to the same index (SPA fallback) or a file inside `dist`.
+
+```mermaid
+flowchart TB
+  subgraph Browser
+    HTML[index.html]
+    JS[main.js / api.js]
+    CSS[style.css]
+  end
+
+  subgraph "Uvicorn + FastAPI :8000"
+    ROOT["GET /"]
+    ASSETS["StaticFiles /assets"]
+    FALL["GET /{full_path}<br/>SPA fallback"]
+    HEALTH["GET /api/health"]
+    SCEN["GET /api/scenarios"]
+    RUN["GET /api/scenarios/{id}/run"]
+    FIND["POST /api/paths/find"]
+    BRANCH["POST /api/branch"]
+    CMP["POST /api/paths/compare"]
+    OTHER["/api/meta /neurons /hubs /journeys"]
+  end
+
+  subgraph Disk
+    DIST["frontend/dist"]
+    JSON[("backend/app/data/connectome.json")]
+  end
+
+  HTML --> JS
+  HTML --> CSS
+  JS -->|fetch /api/...| HEALTH
+  JS --> SCEN
+  JS --> RUN
+  JS --> FIND
+  JS --> BRANCH
+  JS --> CMP
+  ROOT --> DIST
+  ASSETS --> DIST
+  FALL --> DIST
+  HEALTH --> JS
+  SCEN --> JSON
+  RUN --> JSON
+  FIND --> JSON
+  BRANCH --> JSON
+  CMP --> JSON
+  OTHER --> JSON
+```
+
+**Build vs serve:** Vite writes hashed CSS/JS into `frontend/dist`. FastAPI never compiles the UI. After a theme or JS change you must `cd frontend && npm run build` (dev: Vite on 5173 proxies `/api` to 8000).
+
+### 4.0b Request flow — health, scenarios, run
+
+On boot the SPA calls `GET /api/scenarios` and paints the eight cards. A tap calls `GET /api/scenarios/{id}/run`, which looks up `preferred_source` / `preferred_destination` in the JSON, runs `find_paths`, and attaches `playful_story`.
+
+```mermaid
+sequenceDiagram
+  actor User
+  participant SPA as frontend/src/main.js
+  participant API as backend/app/main.py
+  participant G as graph.py
+  participant PF as pathfinder.py
+  participant EX as explain.py
+  participant JSON as connectome.json
+
+  SPA->>API: GET /api/health
+  API-->>SPA: {status: ok, product: Neural Path Finder}
+
+  SPA->>API: GET /api/scenarios
+  API->>G: get_scenarios()
+  G->>JSON: load_raw() lru_cache
+  JSON-->>G: scenarios[]
+  G-->>API: eight scene dicts
+  API-->>SPA: cards with id, mood, emoji, endpoints
+
+  User->>SPA: tap Watch TV / Zapped / …
+  SPA->>API: GET /api/scenarios/watch-tv/run
+  API->>G: match scenario by id
+  API->>PF: PathFindRequest neuron R1 → neuron DNg13
+  PF->>G: build_graph() NetworkX DiGraph
+  G->>JSON: neurons[] + connections[]
+  PF->>PF: shortest_path + all_simple_paths + rank
+  PF->>EX: explain_path / why_this_path
+  API->>EX: playful_story(scenario, top path)
+  API-->>SPA: {scenario, result, story}
+  SPA->>API: POST /api/branch {neuron_id}
+  API->>G: neighbors()
+  API-->>SPA: upstream / downstream
+  SPA-->>User: hop strip, metrics, panels
+```
+
+Scientist mode skips scenarios and posts `POST /api/paths/find` with a `QuerySpec` pair. The compare button posts `POST /api/paths/compare` with `GRN_sweet→LegMN_T1` vs `R1→DNg13`.
+
+### 4.0c Neuron graph data flow
+
+There is no canvas WebGL graph. The “connectome view” is HTML: `renderExplore()` in `main.js` turns `result.paths[].steps` into `.node` buttons and `.edge` synapse labels.
+
+```mermaid
+flowchart LR
+  subgraph "On disk"
+    GEN[scripts/generate_connectome.py]
+    JSON[("connectome.json<br/>neurons, connections,<br/>journeys, scenarios")]
+  end
+  subgraph "Process memory"
+    RAW[graph.load_raw]
+    NX["NetworkX DiGraph<br/>edge weight = 1/synapses"]
+    RANK[pathfinder.find_paths]
+    STORY[explain.playful_story]
+  end
+  subgraph "Browser"
+    CARDS[Scenario cards]
+    TRACK[Hop strip .journey-track]
+    PANELS[Strength bars, anatomy,<br/>branch columns, hubs]
+  end
+
+  GEN --> JSON
+  JSON --> RAW
+  RAW --> NX
+  NX --> RANK
+  RANK --> STORY
+  RANK -->|JSON paths| TRACK
+  STORY --> CARDS
+  RANK --> PANELS
+  TRACK -->|click neuron| NX
+```
+
 ### 4.1 System context
 
 ```mermaid
