@@ -14,3 +14,7 @@ frontend/dist/
 htmlcov/
 .playwright-mcp/
 npf-ui-verify.png
+
+# README / User Guide captures must stay tracked
+!docs/screenshots/
+!docs/screenshots/*.png

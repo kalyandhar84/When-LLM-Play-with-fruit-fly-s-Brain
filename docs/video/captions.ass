@@ -1,0 +1,57 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Inter,36,&H00FFFFFF,&H000000FF,&H00201830,&H80000000,1,0,0,0,100,100,0,0,1,3,0,2,70,70,48,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:08.00,0:00:16.00,Default,,0,0,0,,This is Neural Path Finder — Google Maps\Nfor a fruit fly’s wiring.
+Dialogue: 0,0:00:16.00,0:00:22.00,Default,,0,0,0,,You play a fruit fly’s day\Non a connectome map.
+Dialogue: 0,0:00:22.00,0:00:30.00,Default,,0,0,0,,Tap a moment: tasting food, watching\Na flickering screen, getting zapped.
+Dialogue: 0,0:00:30.00,0:00:36.00,Default,,0,0,0,,A cartoon path hops from sensors\Ntoward movement cells.
+Dialogue: 0,0:00:36.00,0:00:44.00,Default,,0,0,0,,It is a map of connections — not\Na movie of the fly’s feelings.
+Dialogue: 0,0:00:44.00,0:00:49.00,Default,,0,0,0,,Paths do not prove the fly thought,\Ndecided, or felt that way.
+Dialogue: 0,0:00:49.00,0:00:52.00,Default,,0,0,0,,This is not medical advice.
+Dialogue: 0,0:00:52.00,0:00:56.00,Default,,0,0,0,,The data is not a live lab feed.
+Dialogue: 0,0:00:56.00,0:01:02.00,Default,,0,0,0,,The browser never talks to Janelia\Nat runtime.
+Dialogue: 0,0:01:02.00,0:01:10.00,Default,,0,0,0,,A hand-authored file, connectome.json,\Nis written by generate_connectome.py
+Dialogue: 0,0:01:10.00,0:01:16.00,Default,,0,0,0,,and loaded once into a NetworkX\Ndirected graph.
+Dialogue: 0,0:01:16.00,0:01:24.00,Default,,0,0,0,,The published Male CNS has about 166,000\Nneurons and 125 million synapses.
+Dialogue: 0,0:01:24.00,0:01:31.00,Default,,0,0,0,,This app uses 75 neurons and 149 connections —\Na compact teaching subgraph.
+Dialogue: 0,0:01:31.00,0:01:35.00,Default,,0,0,0,,Every edge is structural connectivity:\Nanatomy only.
+Dialogue: 0,0:01:35.00,0:01:40.00,Default,,0,0,0,,Here is what you can do on the live site.
+Dialogue: 0,0:01:40.00,0:01:47.00,Default,,0,0,0,,Eight scene cards: Taste Food, Watch TV,\NZapped By Human,
+Dialogue: 0,0:01:47.00,0:01:53.00,Default,,0,0,0,,Hot Sensation, Cold Sensation,\NSmell Something Yummy,
+Dialogue: 0,0:01:53.00,0:01:58.00,Default,,0,0,0,,Hear a Buzz, and Smell Something Bad.
+Dialogue: 0,0:01:58.00,0:02:06.00,Default,,0,0,0,,One tap runs a real pathfinder and returns\Na short story plus ranked routes.
+Dialogue: 0,0:02:06.00,0:02:12.00,Default,,0,0,0,,The wide button asks: taste food versus\Nwatch TV — do they meet?
+Dialogue: 0,0:02:12.00,0:02:20.00,Default,,0,0,0,,Scientist mode: search by ID, name, type,\Nregion, or category. Classic demo: R1 → DNg13.
+Dialogue: 0,0:02:20.00,0:02:24.00,Default,,0,0,0,,Watch this on the live Azure app.
+Dialogue: 0,0:02:24.00,0:02:32.00,Default,,0,0,0,,I tap Watch TV — photoreceptor R1\Ntoward descending neuron DNg13.
+Dialogue: 0,0:02:32.00,0:02:36.00,Default,,0,0,0,,Status says: Following the wires.
+Dialogue: 0,0:02:36.00,0:02:44.00,Default,,0,0,0,,Story beats land first: the fly stares\Nat a glowing, flickering screen.
+Dialogue: 0,0:02:44.00,0:02:52.00,Default,,0,0,0,,Then the hop strip: R1, L1, Tm3,\NLC10, AVLP713m, DNg13.
+Dialogue: 0,0:02:52.00,0:02:58.00,Default,,0,0,0,,Five hops. Synapse counts sit on the\Ntracks between stations.
+Dialogue: 0,0:02:58.00,0:03:06.00,Default,,0,0,0,,Most direct is selected. Strongest\Nconnectivity and alternatives are other tabs.
+Dialogue: 0,0:03:06.00,0:03:14.00,Default,,0,0,0,,I tap R1 to open branches — cells\Nbefore and after this station.
+Dialogue: 0,0:03:14.00,0:03:22.00,Default,,0,0,0,,Switch to Strongest connectivity to see\Na bottleneck-aware ranking.
+Dialogue: 0,0:03:22.00,0:03:32.00,Default,,0,0,0,,Now Zapped By Human: bristle mechanoreceptor\Ntoward giant-fiber-class DNp01.
+Dialogue: 0,0:03:32.00,0:03:40.00,Default,,0,0,0,,Same engine, different mood — a short\Nstructural escape-style walk.
+Dialogue: 0,0:03:40.00,0:03:46.00,Default,,0,0,0,,Taste food versus watch TV —\Ndo they meet?
+Dialogue: 0,0:03:46.00,0:03:56.00,Default,,0,0,0,,Two queries at once. Shared cells are meeting\Npoints in the graph, not proof they co-occur.
+Dialogue: 0,0:03:56.00,0:04:00.00,Default,,0,0,0,,Scientist mode. Classic demo: R1 → DNg13.\NYou pick the endpoints.
+Dialogue: 0,0:04:00.00,0:04:06.00,Default,,0,0,0,,Architecture lives in docs/ARCHITECTURE.md\Non GitHub.
+Dialogue: 0,0:04:06.00,0:04:14.00,Default,,0,0,0,,FastAPI serves the built Vite SPA and /api\Nfrom the same origin.
+Dialogue: 0,0:04:14.00,0:04:22.00,Default,,0,0,0,,Uvicorn on port 8000. connectome.json on disk.\NNo Janelia client at runtime.
+Dialogue: 0,0:04:22.00,0:04:30.00,Default,,0,0,0,,graph.py builds a NetworkX DiGraph.\Npathfinder.py ranks routes.
+Dialogue: 0,0:04:30.00,0:04:38.00,Default,,0,0,0,,Most direct is 1 / hop count. Strongest is\Na bottleneck-aware synapse score.
+Dialogue: 0,0:04:38.00,0:04:46.00,Default,,0,0,0,,Alternatives maximize Jaccard distance\Nso they do not clone the first path.
+Dialogue: 0,0:04:46.00,0:04:52.00,Default,,0,0,0,,Hubs mix degree and betweenness — local\Nto these 75 nodes, not a decision center.
+Dialogue: 0,0:04:52.00,0:05:00.00,Default,,0,0,0,,That is Neural Path Finder: a wiring map\Nyou can play, not a movie of a fly’s feelings.
+Dialogue: 0,0:05:00.00,0:05:08.00,Default,,0,0,0,,The live app and the GitHub repo\Nare on screen. Thanks for watching.

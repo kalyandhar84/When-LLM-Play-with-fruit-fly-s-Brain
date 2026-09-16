@@ -2,15 +2,19 @@
 
 **Google Maps for a fruit fly’s wiring.** Tap a moment in the fly’s day — tasting food, watching a flickering screen, getting zapped — and watch a cartoon path hop from sensors toward movement cells.
 
+**Docs:** [User Guide](docs/USER_GUIDE.md) (step-by-step with screenshots) · [Architecture](docs/ARCHITECTURE.md) (data, algorithms, diagrams)
+
 This is a playful exhibit over a **curated teaching graph** of the [HHMI Janelia FlyEM Male CNS Connectome](https://www.janelia.org/project-team/flyem/male-cns-connectome) (MaleCNS v1.0, CC BY). The real fly has about **166,000 neurons** and **125 million synapses**. This app does not load that volume. It traces **structural** connections on a compact, named subgraph so a browser can keep up.
 
 > It is a map of connections — not a movie of the fly’s feelings. Paths do not prove the fly thought, decided, or felt that way, and this is not medical advice.
 
 ## Play a fly’s day
 
-A warm daylight UI, a cartoon mascot, and eight scenes. One tap runs a real pathfinder on the teaching graph and tells a short story.
+A warm daylight UI, a cartoon mascot, and eight scenes. One tap runs a real pathfinder on the teaching graph and tells a short story. The full click-by-click walkthrough lives in the **[User Guide](docs/USER_GUIDE.md)**.
 
-![Home — Neural Path Finder landing with mascot and scene cards](docs/screenshots/01-home.png)
+<p align="center">
+  <img src="docs/screenshots/01-home.png" alt="Home: Neural Path Finder landing with mascot and scene cards" width="900">
+</p>
 
 *Landing: pick a scene. The fly waits in the sunshine.*
 
@@ -18,7 +22,9 @@ A warm daylight UI, a cartoon mascot, and eight scenes. One tap runs a real path
 
 Taste Food, Watch TV, Zapped By Human, Hot, Cold, Smell Something Yummy, Hear a Buzz, Smell Something Bad. Each card is a preferred start and end cell in the same connectome JSON the API loads.
 
-![Eight tap-to-play scenario cards, Watch TV selected](docs/screenshots/02-scenarios.png)
+<p align="center">
+  <img src="docs/screenshots/02-scenarios.png" alt="Eight tap-to-play scenario cards, Watch TV selected" width="900">
+</p>
 
 *The Watch TV card is selected — that scene traces photoreceptor **R1** toward descending neuron **DNg13**.*
 
@@ -26,11 +32,15 @@ Taste Food, Watch TV, Zapped By Human, Hot, Cold, Smell Something Yummy, Hear a 
 
 The result is a hop strip: neurons as stations, synapse counts as the tracks between them. Tabs offer most-direct vs strongest vs alternative walks. Tap a cell to see upstream and downstream neighbors.
 
-![Watch TV path result with hop strip, metrics, and explanations](docs/screenshots/03-connectome-path.png)
+<p align="center">
+  <img src="docs/screenshots/03-connectome-path.png" alt="Watch TV path result with hop strip, metrics, and explanations" width="900">
+</p>
 
 *A Watch TV run: story beats, ranked routes, and the anatomical walk from retina toward descending motor cells.*
 
-![Close-up of the neuron hop strip](docs/screenshots/04-journey-track.png)
+<p align="center">
+  <img src="docs/screenshots/04-journey-track.png" alt="Close-up of the neuron hop strip" width="900">
+</p>
 
 *The connectome view in the UI: a directed path drawn as cards and glowing edges (not a 3D volume).*
 
@@ -38,7 +48,9 @@ The result is a hop strip: neurons as stations, synapse counts as the tracks bet
 
 Mechanosensory bristle cells toward giant-fiber-class **DNp01**. Same engine, different mood.
 
-![Zapped By Human scene result on a lemon daylight background](docs/screenshots/05-zapped-run.png)
+<p align="center">
+  <img src="docs/screenshots/05-zapped-run.png" alt="Zapped By Human scene result on a lemon daylight background" width="900">
+</p>
 
 *Zapped By Human: a short structural escape-style walk, still labeled as a wiring map.*
 
@@ -46,7 +58,9 @@ Mechanosensory bristle cells toward giant-fiber-class **DNp01**. Same engine, di
 
 Taste food vs watch TV asks whether the top routes share any cells. Shared nodes are meeting points in the graph, not proof the behaviors happen together.
 
-![Side-by-side comparison of taste-food and watch-TV paths](docs/screenshots/06-compare-taste-tv.png)
+<p align="center">
+  <img src="docs/screenshots/06-compare-taste-tv.png" alt="Side-by-side comparison of taste-food and watch-TV paths" width="900">
+</p>
 
 *Compare: two `POST /api/paths/compare` queries, one split panel.*
 
@@ -54,9 +68,13 @@ Taste food vs watch TV asks whether the top routes share any cells. Shared nodes
 
 Search by neuron ID, name, cell type, region, or category. Classic demo: **R1 → DNg13**.
 
-![Scientist mode origin and destination pickers](docs/screenshots/07-scientist-mode.png)
+<p align="center">
+  <img src="docs/screenshots/07-scientist-mode.png" alt="Scientist mode origin and destination pickers" width="900">
+</p>
 
 *Same toy graph, same structural-only rules — you pick the endpoints.*
+
+Step-by-step clicks, expected on-screen text, and troubleshooting: **[User Guide](docs/USER_GUIDE.md)**.
 
 ## How to run
 
@@ -199,7 +217,8 @@ backend/app/data/      Generated connectome.json
 backend/run.py         Uvicorn entrypoint (0.0.0.0:8000)
 backend/tests/         pytest coverage for health, journeys, paths, compare, neighbors
 frontend/              Vite + vanilla HTML/CSS/JS exhibit UI
-docs/screenshots/      Walkthrough captures of the running app
+docs/screenshots/      Walkthrough captures of the running app (tracked in git)
+docs/USER_GUIDE.md     Click-by-click exhibit walkthrough with those screenshots
 docs/ARCHITECTURE.md   Data, algorithms, API map, Mermaid diagrams
 scripts/generate_connectome.py
 ```

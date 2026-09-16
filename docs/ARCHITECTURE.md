@@ -458,14 +458,14 @@ Uvicorn listens on `0.0.0.0:8000` (`backend/run.py`). `FRONTEND_DIST` is `fronte
 flowchart TB
   subgraph Browser
     HTML[index.html]
-    JS[main.js / api.js]
+    JS["main.js / api.js"]
     CSS[style.css]
   end
 
   subgraph "Uvicorn + FastAPI :8000"
     ROOT["GET /"]
     ASSETS["StaticFiles /assets"]
-    FALL["GET /{full_path}<br/>SPA fallback"]
+    FALL["GET /full_path SPA fallback"]
     HEALTH["GET /api/health"]
     SCEN["GET /api/scenarios"]
     RUN["GET /api/scenarios/{id}/run"]
@@ -517,7 +517,7 @@ sequenceDiagram
   participant JSON as connectome.json
 
   SPA->>API: GET /api/health
-  API-->>SPA: {status: ok, product: Neural Path Finder}
+  API-->>SPA: status ok, product Neural Path Finder
 
   SPA->>API: GET /api/scenarios
   API->>G: get_scenarios()
@@ -535,8 +535,8 @@ sequenceDiagram
   PF->>PF: shortest_path + all_simple_paths + rank
   PF->>EX: explain_path / why_this_path
   API->>EX: playful_story(scenario, top path)
-  API-->>SPA: {scenario, result, story}
-  SPA->>API: POST /api/branch {neuron_id}
+  API-->>SPA: scenario plus result plus story
+  SPA->>API: POST /api/branch neuron_id
   API->>G: neighbors()
   API-->>SPA: upstream / downstream
   SPA-->>User: hop strip, metrics, panels
@@ -555,14 +555,14 @@ flowchart LR
     JSON[("connectome.json<br/>neurons, connections,<br/>journeys, scenarios")]
   end
   subgraph "Process memory"
-    RAW[graph.load_raw]
+    RAW["graph.load_raw"]
     NX["NetworkX DiGraph<br/>edge weight = 1/synapses"]
     RANK[pathfinder.find_paths]
     STORY[explain.playful_story]
   end
   subgraph "Browser"
     CARDS[Scenario cards]
-    TRACK[Hop strip .journey-track]
+    TRACK["Hop strip .journey-track"]
     PANELS[Strength bars, anatomy,<br/>branch columns, hubs]
   end
 
@@ -623,11 +623,11 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  A[Janelia MaleCNS v1.0<br/>~166k neurons / ~125M synapses] --> B[NeuPrint type and partner queries]
-  A --> C[Cell Type Explorer<br/>DNg13 inputs / LegNp T1–T3 outputs]
-  A --> D[Neuroglancer morphology]
-  A --> E[Google Research / Janelia<br/>sensory → motor framing]
-  E2[Published Drosophila motifs<br/>arista HC/CC, JO, bristle, DNp01] --> F
+  A["Janelia MaleCNS v1.0<br/>~166k neurons / ~125M synapses"] --> B["NeuPrint type and partner queries"]
+  A --> C["Cell Type Explorer<br/>DNg13 inputs / LegNp T1-T3 outputs"]
+  A --> D["Neuroglancer morphology"]
+  A --> E["Google Research / Janelia<br/>sensory to motor framing"]
+  E2["Published Drosophila motifs<br/>arista HC/CC, JO, bristle, DNp01"] --> F
 
   B --> F[Human curation]
   C --> F
@@ -636,7 +636,7 @@ flowchart TD
 
   F --> G["scripts/generate_connectome.py<br/>typed neurons + representative edges<br/>+ a few published partner weights<br/>+ journeys + playful scenarios"]
   G --> H[(backend/app/data/connectome.json)]
-  H --> I[graph.build_graph — DiGraph]
+  H --> I["graph.build_graph - DiGraph"]
   I --> J[Search / neighbors / hubs / path find]
   H --> K[journeys + scenarios metadata]
   K --> L[Exhibit cards and scientist journeys]
@@ -682,25 +682,25 @@ This is the **anatomical story**, not one exclusive hop list. The live shortest 
 ```mermaid
 flowchart LR
   subgraph Photoreceptor
-    R[R1–R6<br/>histaminergic]
+    R["R1-R6<br/>histaminergic"]
   end
   subgraph Lamina
-    L[L1 / L2 / L3]
+    L["L1 / L2 / L3"]
   end
   subgraph Medulla
-    M[Mi1 · Tm3 · TmY3 · T4]
+    M["Mi1 / Tm3 / TmY3 / T4"]
   end
   subgraph "Lobula / projection"
-    P[T5 · LC10 · LC11<br/>LoVP · AOTU002/015/016]
+    P["T5 / LC10 / LC11<br/>LoVP / AOTU002/015/016"]
   end
   subgraph "Central brain"
-    CB[LAL · Vest · AVLP<br/>CB0244 · GNG · WED]
+    CB["LAL / Vest / AVLP<br/>CB0244 / GNG / WED"]
   end
   subgraph Descending
-    DN[DNg13]
+    DN["DNg13"]
   end
   subgraph "VNC / motor"
-    V[IN19A015<br/>LegMN T1 / T2 / T3]
+    V["IN19A015<br/>LegMN T1 / T2 / T3"]
   end
 
   R -->|lamina cartridges| L
@@ -739,39 +739,39 @@ flowchart TD
 
 ```mermaid
 flowchart TB
-  subgraph "backend/app"
-    main[main.py — routes, CORS, SPA]
-    models[models.py — Neuron, Connection, Path DTOs]
-    graph[graph.py — load JSON, resolve, search, neighbors, hubs, scenarios]
-    pf[pathfinder.py — enumerate, score, select, compare]
-    ex[explain.py — prose, why-this-path, playful_story]
-    data[(data/connectome.json)]
+  subgraph backendApp["backend/app"]
+    mainpy["main.py - routes, CORS, SPA"]
+    modelsPy["models.py - Neuron, Connection, Path DTOs"]
+    graphpy["graph.py - load JSON, resolve, search, neighbors, hubs, scenarios"]
+    pf["pathfinder.py - enumerate, score, select, compare"]
+    ex["explain.py - prose, why-this-path, playful_story"]
+    data[("data/connectome.json")]
   end
 
-  subgraph "backend/"
-    run[run.py — uvicorn 0.0.0.0:8000]
-    tests[tests/test_api.py]
+  subgraph backendDir["backend/"]
+    runpy["run.py - uvicorn 0.0.0.0:8000"]
+    tests["tests/test_api.py"]
   end
 
-  subgraph "repo root"
-    gen[scripts/generate_connectome.py]
-    fe[frontend/ Vite SPA]
-    req[requirements.txt + fly venv]
+  subgraph repoRoot["repo root"]
+    gen["scripts/generate_connectome.py"]
+    fe["frontend/ Vite SPA"]
+    req["requirements.txt + fly venv"]
   end
 
   gen --> data
-  data --> graph
-  graph --> pf
+  data --> graphpy
+  graphpy --> pf
   pf --> ex
-  main --> graph
-  main --> pf
-  main --> models
-  main --> ex
-  run --> main
-  tests --> main
-  fe -->|/api| main
-  main -->|frontend/dist| fe
-  req -.-> run
+  mainpy --> graphpy
+  mainpy --> pf
+  mainpy --> modelsPy
+  mainpy --> ex
+  runpy --> mainpy
+  tests --> mainpy
+  fe -->|"/api"| mainpy
+  mainpy -->|"frontend/dist"| fe
+  req -.-> runpy
 ```
 
 ---
